@@ -252,9 +252,9 @@
 		A24EF0B2298B8A8F004B6F01 /* 2020 */ = {
 			isa = PBXGroup;
 			children = (
-				A24EF0B3298B8A8F004B6F01 /* 11月 */,
 				A24EF0BC298B8A8F004B6F01 /* 9月 */,
 				A24EF0C9298B8A8F004B6F01 /* 10月 */,
+				A24EF0B3298B8A8F004B6F01 /* 11月 */,
 			);
 			path = 2020;
 			sourceTree = "<group>";
@@ -320,8 +320,8 @@
 			children = (
 				A24EF0DA298B8A8F004B6F01 /* 1月 */,
 				A24EF0DC298B8A8F004B6F01 /* 2月 */,
-				A24EF0DF298B8A8F004B6F01 /* 7月 */,
 				A24EF0E5298B8A8F004B6F01 /* 3月 */,
+				A24EF0DF298B8A8F004B6F01 /* 7月 */,
 			);
 			path = 2022;
 			sourceTree = "<group>";
@@ -374,8 +374,8 @@
 			children = (
 				A24EF0EE298B8A8F004B6F01 /* 1月 */,
 				A24EF0FE298B8A8F004B6F01 /* 2月 */,
-				A24EF102298B8A8F004B6F01 /* 4月 */,
 				A24EF107298B8A8F004B6F01 /* 3月 */,
+				A24EF102298B8A8F004B6F01 /* 4月 */,
 			);
 			path = 2021;
 			sourceTree = "<group>";
