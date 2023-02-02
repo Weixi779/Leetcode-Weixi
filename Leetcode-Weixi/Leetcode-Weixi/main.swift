@@ -7,5 +7,5 @@
 
 import Foundation
 
-print("Hello, World!")
-
+let test = LeetCode2023.February.Solution230201()
+print(test.decodeMessage("the quick brown fox jumps over the lazy dog", "vkbs bs t suepuv"))

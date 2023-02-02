@@ -100,6 +100,8 @@
 		A24EF175298B8A90004B6F01 /* 20210303(338).swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF119298B8A8F004B6F01 /* 20210303(338).swift */; };
 		A24EF176298B8A90004B6F01 /* 20210330.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF11A298B8A8F004B6F01 /* 20210330.swift */; };
 		A24EF177298B8A90004B6F01 /* 20210329(190).swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF11B298B8A8F004B6F01 /* 20210329(190).swift */; };
+		A24EF179298B8D06004B6F01 /* 230201.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF178298B8D06004B6F01 /* 230201.swift */; };
+		A24EF17D298B8D53004B6F01 /* LeetCode2023.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF17C298B8D53004B6F01 /* LeetCode2023.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -209,6 +211,8 @@
 		A24EF119298B8A8F004B6F01 /* 20210303(338).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "20210303(338).swift"; sourceTree = "<group>"; };
 		A24EF11A298B8A8F004B6F01 /* 20210330.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = 20210330.swift; sourceTree = "<group>"; };
 		A24EF11B298B8A8F004B6F01 /* 20210329(190).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "20210329(190).swift"; sourceTree = "<group>"; };
+		A24EF178298B8D06004B6F01 /* 230201.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 230201.swift; sourceTree = "<group>"; };
+		A24EF17C298B8D53004B6F01 /* LeetCode2023.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCode2023.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +248,7 @@
 				A24EF0B2298B8A8F004B6F01 /* 2020 */,
 				A24EF0ED298B8A8F004B6F01 /* 2021 */,
 				A24EF0D9298B8A8F004B6F01 /* 2022 */,
+				A24EF17A298B8D0C004B6F01 /* 2023 */,
 				60389A7329800470005E4E8F /* main.swift */,
 			);
 			path = "Leetcode-Weixi";
@@ -450,6 +455,23 @@
 			path = "3月";
 			sourceTree = "<group>";
 		};
+		A24EF17A298B8D0C004B6F01 /* 2023 */ = {
+			isa = PBXGroup;
+			children = (
+				A24EF17C298B8D53004B6F01 /* LeetCode2023.swift */,
+				A24EF17B298B8D26004B6F01 /* 2月 */,
+			);
+			path = 2023;
+			sourceTree = "<group>";
+		};
+		A24EF17B298B8D26004B6F01 /* 2月 */ = {
+			isa = PBXGroup;
+			children = (
+				A24EF178298B8D06004B6F01 /* 230201.swift */,
+			);
+			path = "2月";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -517,6 +539,7 @@
 				A24EF155298B8A90004B6F01 /* 210115(947).swift in Sources */,
 				A24EF131298B8A90004B6F01 /* 201025.swift in Sources */,
 				A24EF11E298B8A8F004B6F01 /* 201106(我是一行超人).swift in Sources */,
+				A24EF179298B8D06004B6F01 /* 230201.swift in Sources */,
 				A24EF175298B8A90004B6F01 /* 20210303(338).swift in Sources */,
 				A24EF174298B8A90004B6F01 /* 20210321(73).swift in Sources */,
 				A24EF154298B8A90004B6F01 /* 210101(605).swift in Sources */,
@@ -549,6 +572,7 @@
 				A24EF161298B8A90004B6F01 /* 20210403(1143).swift in Sources */,
 				A24EF13A298B8A90004B6F01 /* 201012.swift in Sources */,
 				A24EF122298B8A8F004B6F01 /* 201105(这期是转折点).swift in Sources */,
+				A24EF17D298B8D53004B6F01 /* LeetCode2023.swift in Sources */,
 				A24EF12E298B8A90004B6F01 /* 200929.swift in Sources */,
 				A24EF169298B8A90004B6F01 /* 20210331(90).swift in Sources */,
 				A24EF139298B8A90004B6F01 /* 201009.swift in Sources */,
@@ -726,6 +750,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65972SHM9W;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -737,6 +762,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65972SHM9W;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
