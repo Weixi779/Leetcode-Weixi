@@ -14,18 +14,15 @@ extension LeetCode2023.February {
     class Solution230201 {
         func decodeMessage(_ key: String, _ message: String) -> String {
             var result = ""
-            var hashMap: [String:String] = [" ":" "]
-            let letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+            var hashMap: [Character:Character] = [" ":" "]
+            let asciiValueForA = 97
             // 构建hashmap
             for char in key {
-                let str = String(char)
-                // 无值时 才会去赋值
-                hashMap[str] = (hashMap[str] ?? letters[hashMap.count-1])
+                hashMap[char] = (hashMap[char] ?? Character(UnicodeScalar(asciiValueForA + hashMap.count - 1)!))
             }
             // 转换message
             for char in message {
-                let str = String(char)
-                result.append(hashMap[str]!)
+                result.append(hashMap[char]!)
             }
             
             return result
