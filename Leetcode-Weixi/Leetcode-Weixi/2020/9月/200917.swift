@@ -9,6 +9,7 @@ import Foundation
 
 class Solution200917 {
     var sum: Int = 0
+    @discardableResult
     func convertBST(_ root: TreeNode?) -> TreeNode? {
         guard let node = root else { return root }
         convertBST(node.right)
