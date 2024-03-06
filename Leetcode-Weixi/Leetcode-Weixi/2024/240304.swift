@@ -44,7 +44,7 @@ extension LeetCode2024.March {
         }
         
         func push(_ x: Int) {
-            var tempStack = Stack()
+            let tempStack = Stack()
             while !self.storeStack.empty() {
                 tempStack.push(tempStack.pop())
             }
