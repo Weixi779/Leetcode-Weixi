@@ -13,19 +13,13 @@ import Foundation
 extension LeetCode2024.March {
     class Solution240307 {
         func divisibilityArray(_ word: String, _ m: Int) -> [Int] {
-            var result = [Int]()
+            let chars = Array(word)
+            var result = [Int](repeating: 0, count: word.count)
             var sum = 0
-            for char in word {
-                let current: Int = char.wholeNumberValue ?? 0
-                sum = (sum * 10 + current)
-                let mod = sum % m
-                if mod == 0 {
-                    sum = 0
-                    result.append(1)
-                } else {
-                    sum = mod
-                    result.append(0)
-                }
+            for index in chars.indices {
+                let current = chars[index].wholeNumberValue ?? 0
+                sum = ((sum * 10) + current) % m
+                if sum == 0 { result[index] = 1 }
             }
             return result
         }
