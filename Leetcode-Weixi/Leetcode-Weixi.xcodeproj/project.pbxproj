@@ -24,6 +24,8 @@
 		60D8DE222BA16F4C0021F7E2 /* 240313.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8DE212BA16F4C0021F7E2 /* 240313.swift */; };
 		60D8DE242BA2B36E0021F7E2 /* 240314.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8DE232BA2B36E0021F7E2 /* 240314.swift */; };
 		60D8DE2A2BA54CA90021F7E2 /* 240315.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8DE292BA54CA90021F7E2 /* 240315.swift */; };
+		60DF0A642C1FF893004A878F /* HotProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DF0A632C1FF893004A878F /* HotProblem.swift */; };
+		60DF0A662C1FFE63004A878F /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DF0A652C1FFE63004A878F /* ListNode.swift */; };
 		A24EF11C298B8A8F004B6F01 /* 201107.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF0B4298B8A8F004B6F01 /* 201107.swift */; };
 		A24EF11D298B8A8F004B6F01 /* 201103.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF0B5298B8A8F004B6F01 /* 201103.swift */; };
 		A24EF11E298B8A8F004B6F01 /* 201106(我是一行超人).swift in Sources */ = {isa = PBXBuildFile; fileRef = A24EF0B6298B8A8F004B6F01 /* 201106(我是一行超人).swift */; };
@@ -152,6 +154,8 @@
 		60D8DE212BA16F4C0021F7E2 /* 240313.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 240313.swift; sourceTree = "<group>"; };
 		60D8DE232BA2B36E0021F7E2 /* 240314.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 240314.swift; sourceTree = "<group>"; };
 		60D8DE292BA54CA90021F7E2 /* 240315.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 240315.swift; sourceTree = "<group>"; };
+		60DF0A632C1FF893004A878F /* HotProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotProblem.swift; sourceTree = "<group>"; };
+		60DF0A652C1FFE63004A878F /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		A24EF0B4298B8A8F004B6F01 /* 201107.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = 201107.swift; sourceTree = "<group>"; };
 		A24EF0B5298B8A8F004B6F01 /* 201103.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = 201103.swift; sourceTree = "<group>"; };
 		A24EF0B6298B8A8F004B6F01 /* 201106(我是一行超人).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "201106(我是一行超人).swift"; sourceTree = "<group>"; };
@@ -279,6 +283,7 @@
 		60389A7229800470005E4E8F /* Leetcode-Weixi */ = {
 			isa = PBXGroup;
 			children = (
+				60DF0A622C1FF85A004A878F /* Hot100 */,
 				A24EF0B2298B8A8F004B6F01 /* 2020 */,
 				A24EF0ED298B8A8F004B6F01 /* 2021 */,
 				A24EF0D9298B8A8F004B6F01 /* 2022 */,
@@ -286,6 +291,7 @@
 				6099E2962B94539A0005AE35 /* 2024 */,
 				60389A7329800470005E4E8F /* main.swift */,
 				60D8DE1B2BA01F600021F7E2 /* TreeNode.swift */,
+				60DF0A652C1FFE63004A878F /* ListNode.swift */,
 			);
 			path = "Leetcode-Weixi";
 			sourceTree = "<group>";
@@ -326,6 +332,14 @@
 				60D8DE292BA54CA90021F7E2 /* 240315.swift */,
 			);
 			path = 3;
+			sourceTree = "<group>";
+		};
+		60DF0A622C1FF85A004A878F /* Hot100 */ = {
+			isa = PBXGroup;
+			children = (
+				60DF0A632C1FF893004A878F /* HotProblem.swift */,
+			);
+			path = Hot100;
 			sourceTree = "<group>";
 		};
 		A24EF0B2298B8A8F004B6F01 /* 2020 */ = {
@@ -575,7 +589,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					60389A6F29800470005E4E8F = {
 						CreatedOnToolsVersion = 14.2;
@@ -652,6 +666,7 @@
 				A24EF16D298B8A90004B6F01 /* 20210328(173).swift in Sources */,
 				A24EF163298B8A90004B6F01 /* 20210404(781).swift in Sources */,
 				A24EF161298B8A90004B6F01 /* 20210403(1143).swift in Sources */,
+				60DF0A662C1FFE63004A878F /* ListNode.swift in Sources */,
 				A24EF13A298B8A90004B6F01 /* 201012.swift in Sources */,
 				A24EF122298B8A8F004B6F01 /* 201105(这期是转折点).swift in Sources */,
 				A24EF17D298B8D53004B6F01 /* LeetCode2023.swift in Sources */,
@@ -714,6 +729,7 @@
 				A24EF16F298B8A90004B6F01 /* 0313(705)滑动窗口.swift in Sources */,
 				A24EF170298B8A90004B6F01 /* 20210317(54).swift in Sources */,
 				A24EF173298B8A90004B6F01 /* 20210314(706).swift in Sources */,
+				60DF0A642C1FF893004A878F /* HotProblem.swift in Sources */,
 				A24EF130298B8A90004B6F01 /* 201018.swift in Sources */,
 				A24EF153298B8A90004B6F01 /* 210110(228).swift in Sources */,
 				60A76B242B9839BA006A1064 /* 240306.swift in Sources */,
@@ -727,6 +743,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -789,6 +806,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
