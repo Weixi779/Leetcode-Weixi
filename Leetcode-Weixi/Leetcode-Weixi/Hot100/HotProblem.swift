@@ -166,3 +166,19 @@ extension HotProblem {
         return result
     }
 }
+
+// - MARK: 4. 寻找两个正序数组的中位数
+
+extension HotProblem {
+    func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
+        let count = nums1.count + nums2.count
+        let midCount = count / 2
+        let nums3 = (nums1 + nums2).sorted()
+        
+        if count % 2 == 1 {
+            return Double(nums3[midCount])
+        } else {
+            return Double(nums3[midCount-1] + nums3[midCount]) / 2.0
+        }
+    }
+}
