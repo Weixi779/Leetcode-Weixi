@@ -51,8 +51,9 @@ extension HotProblem {
 
 // - MARK: 树 专项
 
-// 102. 二叉树的层序遍历
+// MARK: 102. 二叉树的层序遍历
 extension HotProblem {
+//    // - 递归写法
 //    func levelOrder(_ root: TreeNode?) -> [[Int]] {
 //        var result = [[Int]]()
 //        var height = 0
@@ -67,9 +68,7 @@ extension HotProblem {
 //        helper(node.left, height + 1,  &grid)
 //        helper(node.right, height + 1 , &grid)
 //    }
-    
-    
-    
+    // - 遍历写法
     func levelOrder(_ root: TreeNode?) -> [[Int]] {
         guard let root = root else { return [[Int]]() }
         var result = [[Int]]()
@@ -97,7 +96,7 @@ extension HotProblem {
             self.children = []
         }
     }
-    
+//    // - 递归写法
 //    func preorder(_ root: Node?) -> [Int] {
 //        guard let root = root else { return [] }
 //        var result = [Int]()
@@ -112,7 +111,7 @@ extension HotProblem {
 //            helper(child, &array)
 //        }
 //    }
-    
+//    // - 遍历写法
     func preorder(_ root: Node?) -> [Int] {
         guard let root = root else { return [] }
         var result = [Int]()
@@ -130,7 +129,7 @@ extension HotProblem {
 /*
  关键字: 连续子数组 最长 / 最短
  思想模版:
-    双层while循环
+    双指针while循环
     while (右指针没到终点) {
         更新结果
         while (记过符合当前要求) {
@@ -142,7 +141,7 @@ extension HotProblem {
     }
  */
 
-// - MARK: 3. 无重复字符的最长子串
+// MARK: 3. 无重复字符的最长子串
 extension HotProblem {
     func lengthOfLongestSubstring(_ s: String) -> Int {
         var chars = [Character](s)
