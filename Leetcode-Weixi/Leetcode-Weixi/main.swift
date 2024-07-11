@@ -25,4 +25,5 @@ let hot = HotProblem()
 //node20.right = node7
 //
 //print(hot.levelOrder(root))
-print(hot.lengthOfLongestSubstring("abcabcbb"))
+//print(hot.longestPalindrome("abcabcbb"))
+print(hot.maxArea([2,3,4,5,18,17,6]))

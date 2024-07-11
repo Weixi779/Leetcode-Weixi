@@ -49,7 +49,7 @@ extension HotProblem {
 }
 
 
-// - MARK: 树 专项
+// MARK: - 树 专项
 
 // MARK: 102. 二叉树的层序遍历
 extension HotProblem {
@@ -125,8 +125,9 @@ extension HotProblem {
     }
 }
 
-// - MARK: 滑动窗口专项
+// MARK: 3. 无重复字符的最长子串
 /*
+ 算法: 滑动窗口
  关键字: 连续子数组 最长 / 最短
  思想模版:
     双指针while循环
@@ -141,10 +142,9 @@ extension HotProblem {
     }
  */
 
-// MARK: 3. 无重复字符的最长子串
 extension HotProblem {
     func lengthOfLongestSubstring(_ s: String) -> Int {
-        var chars = [Character](s)
+        let chars = [Character](s)
         var charSet = Set<Character>()
         var left = 0
         var right = 0
@@ -180,5 +180,58 @@ extension HotProblem {
         } else {
             return Double(nums3[midCount-1] + nums3[midCount]) / 2.0
         }
+    }
+}
+
+// - MARK: 5. 最长回文子串
+/*
+ 中心扩散算法 回文串特化算法
+ */
+extension HotProblem {
+    func isSameChar(_ chars: [Character], _ left: Int, _ right: Int) -> Bool {
+        return left >= 0 && right < chars.count && chars[left] == chars[right]
+    }
+
+    func longestResult(_ chars: [Character], _ left: Int, _ right: Int) -> (Int, Int) {
+        var left = left
+        var right = right
+        while isSameChar(chars, left, right) {
+            left -= 1
+            right += 1
+        }
+        return (left + 1, right - 1)
+        
+    }
+
+    func longestPalindrome(_ s: String) -> String {
+        guard s.count > 1 else { return s }
+        let chars = [Character](s)
+        var result: (Int, Int) = (0, 0)
+        for index in chars.indices {
+            let result1 = longestResult(chars, index, index)
+            let result2 = longestResult(chars, index, index + 1)
+            let maxResult = result1.1 - result1.0 > result2.1 - result2.0 ? result1 : result2
+            result = maxResult.1 - maxResult.0 > result.1 - result.0 ? maxResult : result
+        }
+        return String(chars[result.0...result.1])
+    }
+}
+
+
+// - MARK: 11. 盛最多水的容器
+extension HotProblem {
+    func maxArea(_ height: [Int]) -> Int {
+        var res = 0
+        var left = 0
+        var right = height.count - 1
+        while left < right {
+            res = max(res, (right-left)*min(height[left], height[right]))
+            if height[left] < height[right] {
+                left += 1
+            } else {
+                right -= 1
+            }
+        }
+        return res
     }
 }
