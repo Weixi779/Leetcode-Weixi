@@ -26,4 +26,8 @@ let hot = HotProblem()
 //
 //print(hot.levelOrder(root))
 //print(hot.longestPalindrome("abcabcbb"))
-print(hot.maxArea([2,3,4,5,18,17,6]))
+let first = ListNode(1)
+let second = ListNode(2)
+first.next = second
+
+print(hot.removeNthFromEnd(first, 1)?.val)

@@ -9,7 +9,7 @@ import Foundation
 
 class HotProblem {}
 
-// - MARK: 1. 两数之和
+// MARK: 1. 两数之和
 extension HotProblem {
     func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
         // value : index
@@ -25,7 +25,7 @@ extension HotProblem {
     }
 }
 
-// - MARK: 2. 两数相加
+// MARK: 2. 两数相加
 extension HotProblem {
     func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
         let head = ListNode()
@@ -183,7 +183,7 @@ extension HotProblem {
     }
 }
 
-// - MARK: 5. 最长回文子串
+// MARK: 5. 最长回文子串
 /*
  中心扩散算法 回文串特化算法
  */
@@ -218,7 +218,7 @@ extension HotProblem {
 }
 
 
-// - MARK: 11. 盛最多水的容器
+// MARK: 11. 盛最多水的容器
 extension HotProblem {
     func maxArea(_ height: [Int]) -> Int {
         var res = 0
@@ -233,5 +233,155 @@ extension HotProblem {
             }
         }
         return res
+    }
+}
+
+// MARK: 15. 三数之和
+extension HotProblem {
+//    // 暴力递归 倒是也过了
+//    func threeSum(_ nums: [Int]) -> [[Int]] {
+//        let nums = nums.sorted()
+//        var result = [[Int]]()
+//        var lastFirst = Int.min
+//        var lastSecond = Int.min
+//        for x in 0..<nums.count - 2 {
+//            let firstValue = nums[x]
+//            if firstValue > 0 { break }
+//            if lastFirst == firstValue { continue }
+//            lastFirst = firstValue
+//            for y in x + 1..<nums.count - 1 {
+//                let secondValue = nums[y]
+//                if lastSecond == secondValue { continue }
+//                lastSecond = secondValue
+//                let target = -(firstValue + secondValue)
+//                let isContains = nums[y + 1..<nums.count].contains(target)
+//                if isContains {
+//                    result.append([firstValue, secondValue, target])
+//                }
+//            }
+//        }
+//        return result
+//    }
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        let nums = nums.sorted()
+        var result = [[Int]]()
+        for index in 0..<nums.count - 2 {
+            if nums[index] > 0 { break }
+            if index > 0 && nums[index] == nums[index-1] { continue }
+            
+            var left = index + 1
+            var right = nums.count - 1
+            while left < right {
+                let sum = nums[index] + nums[left] + nums[right]
+                if sum == 0 {
+                    result.append([nums[index], nums[left], nums[right]])
+                    while left < right && nums[left] == nums[left+1] { left += 1 }
+                    while left < right && nums[right] == nums[right-1] { right -= 1 }
+                    left += 1
+                    right -= 1
+                }
+                if (sum < 0) { left += 1 }
+                if (sum > 0) { right -= 1 }
+            }
+        }
+        return result
+    }
+}
+
+// MARK: 17. 电话号码的字母组合
+
+extension HotProblem {
+    func letterCombinations(_ digits: String) -> [String] {
+        guard digits.count > 0 else { return [] }
+        let letterMap: [Character: [Character]] = [
+            "2":["a","b","c"],
+            "3":["d","e","f"],
+            "4":["g","h","i"],
+            "5":["j","k","l"],
+            "6":["m","n","o"],
+            "7":["p","q","r","s"],
+            "8":["t","u","v"],
+            "9":["w","x","y","z"]
+        ]
+        
+        let letters: [[Character]] = digits.compactMap{ letterMap[$0] }
+        var result = [String]()
+        var tempString = ""
+        letterCombinationsHelper(letters, 0, &tempString, &result)
+        return result
+    }
+    
+    func letterCombinationsHelper(_ letterMap: [[Character]],
+                                  _ index: Int,
+                                  _ tempString: inout String,
+                                  _ result: inout [String]) {
+        if index == letterMap.count {
+            result.append(tempString)
+            return
+        }
+        for char in letterMap[index] {
+            tempString.append(char)
+            letterCombinationsHelper(letterMap, index+1, &tempString, &result)
+            tempString.removeLast()
+        }
+    }
+}
+
+// MARK: 19. 删除链表的倒数第 N 个结点
+extension HotProblem {
+   func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
+       var dummy = ListNode(0, head)
+       var slow = dummy
+       var fast = dummy
+       var step = 0
+       while step != n, let next = fast.next {
+           fast = next
+           step += 1
+       }
+       while let fastNext = fast.next, let slowNext = slow.next {
+           fast = fastNext
+           slow = slowNext
+       }
+       slow.next = slow.next?.next
+       return dummy.next
+   }
+}
+
+// MARK: 20. 有效的括号
+extension HotProblem {
+    func isValid(_ s: String) -> Bool {
+        var stack = [Character]()
+        var popMap: [Character: Character] = [")":"(", "]":"[", "}":"{"]
+        for char in s {
+            if let value = popMap[char] {
+                if stack.popLast() != value { return false }
+            } else {
+                stack.append(char)
+            }
+        }
+        
+        return stack.isEmpty
+    }
+}
+
+// MARK: 21. 合并两个有序链表
+extension HotProblem {
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        let dummy = ListNode(0)
+        var node: ListNode? = dummy
+        var node1 = list1
+        var node2 = list2
+        while let value1 = node1?.val, let value2 = node2?.val {
+            if value1 < value2 {
+                node?.next = node1
+                node1 = node1?.next
+            } else {
+                node?.next = node2
+                node2 = node2?.next
+            }
+            node = node?.next
+        }
+        node?.next = node1 ?? node2
+        return dummy.next
     }
 }
