@@ -26,8 +26,4 @@ let hot = HotProblem()
 //
 //print(hot.levelOrder(root))
 //print(hot.longestPalindrome("abcabcbb"))
-let first = ListNode(1)
-let second = ListNode(2)
-first.next = second
-
-print(hot.removeNthFromEnd(first, 1)?.val)
+print(hot.generateParenthesis(3))

@@ -330,7 +330,7 @@ extension HotProblem {
 // MARK: 19. 删除链表的倒数第 N 个结点
 extension HotProblem {
    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
-       var dummy = ListNode(0, head)
+       let dummy = ListNode(0, head)
        var slow = dummy
        var fast = dummy
        var step = 0
@@ -351,7 +351,7 @@ extension HotProblem {
 extension HotProblem {
     func isValid(_ s: String) -> Bool {
         var stack = [Character]()
-        var popMap: [Character: Character] = [")":"(", "]":"[", "}":"{"]
+        let popMap: [Character: Character] = [")":"(", "]":"[", "}":"{"]
         for char in s {
             if let value = popMap[char] {
                 if stack.popLast() != value { return false }
@@ -383,5 +383,33 @@ extension HotProblem {
         }
         node?.next = node1 ?? node2
         return dummy.next
+    }
+}
+
+// MARK: 22. 括号生成
+extension HotProblem {
+    func generateParenthesis(_ n: Int) -> [String] {
+        var result = [String]()
+        var tempString = ""
+        generateParenthesisHelper(0, 0, n, &tempString, &result)
+        return result
+    }
+    
+    func generateParenthesisHelper(_ leftCount: Int, _ rightCount: Int, _ targetCount: Int, _ tempString: inout String, _ result: inout [String]) {
+        if leftCount == targetCount && rightCount == targetCount {
+            result.append(tempString)
+            return
+        }
+        if leftCount < targetCount {
+            tempString.append("(")
+            generateParenthesisHelper(leftCount+1, rightCount, targetCount, &tempString, &result)
+            tempString.removeLast()
+        }
+        
+        if leftCount > rightCount {
+            tempString.append(")")
+            generateParenthesisHelper(leftCount, rightCount+1, targetCount, &tempString, &result)
+            tempString.removeLast()
+        }
     }
 }
