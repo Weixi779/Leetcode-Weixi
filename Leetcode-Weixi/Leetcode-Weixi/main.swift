@@ -26,4 +26,4 @@ let hot = HotProblem()
 //
 //print(hot.levelOrder(root))
 //print(hot.longestPalindrome("abcabcbb"))
-print(hot.generateParenthesis(3))
+print(hot.longestValidParentheses("(()"))
