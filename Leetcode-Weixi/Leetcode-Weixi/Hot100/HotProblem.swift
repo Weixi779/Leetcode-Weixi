@@ -536,3 +536,30 @@ extension HotProblem {
         return [first, second]
     }
 }
+
+// MARK: 39. 组合总和
+extension HotProblem {
+    func combinationSumHelper(_ candidates: [Int], _ target: Int, _ index: Int,  _ sum: Int, _ temp: inout [Int], _ result: inout [[Int]]) {
+        if sum == target {
+            result.append(temp)
+            return
+        }
+        
+        if sum > target {
+            return
+        }
+        
+        for i in index..<candidates.count {
+            temp.append(candidates[i])
+            combinationSumHelper(candidates, target, i, sum + candidates[i], &temp, &result)
+            temp.removeLast()
+        }
+    }
+    
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var result = [[Int]]()
+        var temp = [Int]()
+        combinationSumHelper(candidates, target, 0, 0, &temp, &result)
+        return result
+    }
+}
