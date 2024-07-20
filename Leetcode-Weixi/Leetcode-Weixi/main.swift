@@ -26,4 +26,7 @@ let hot = HotProblem()
 //
 //print(hot.levelOrder(root))
 //print(hot.longestPalindrome("abcabcbb"))
-print(hot.longestValidParentheses("(()"))
+//print(hot.longestValidParentheses("(()"))
+var matrix = [[1,2,3],[4,5,6],[7,8,9]]
+hot.rotate(&matrix)
+print(matrix)

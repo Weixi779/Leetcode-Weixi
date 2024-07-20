@@ -432,7 +432,7 @@ extension HotProblem {
 // MARK: 32. 最长有效括号
 extension HotProblem {
     func longestValidParentheses(_ s: String) -> Int {
-        var chars = [Character](s)
+        let chars = [Character](s)
         var stack = [Int]()
         var result = 0
         for i in chars.indices {
@@ -561,5 +561,63 @@ extension HotProblem {
         var temp = [Int]()
         combinationSumHelper(candidates, target, 0, 0, &temp, &result)
         return result
+    }
+}
+
+// MARK: 46. 全排列
+extension HotProblem {
+    func pernuteHelper(_ nums: [Int], _ hashMap: inout [Int: Bool], _ result: inout [[Int]], _ temp: inout [Int]) {
+        if temp.count == nums.count {
+            result.append(temp)
+            return
+        }
+        
+        for num in nums {
+            if hashMap[num] == true { continue }
+            temp.append(num)
+            hashMap[num] = true
+            pernuteHelper(nums, &hashMap, &result, &temp)
+            let last = temp.removeLast()
+            hashMap[last] = false
+        }
+    }
+    
+    func permute(_ nums: [Int]) -> [[Int]] {
+        var result = [[Int]]()
+        var temp = [Int]()
+        var hashMap = [Int: Bool]()
+        pernuteHelper(nums, &hashMap, &result, &temp)
+        return result
+    }
+}
+
+// MARK: 48. 旋转图像
+extension HotProblem {
+    func rotate(_ matrix: inout [[Int]]) {
+        for i in matrix.indices {
+            for j in 0..<i {
+                (matrix[i][j], matrix[j][i]) = (matrix[j][i], matrix[i][j])
+            }
+        }
+//        for x in 0..<(matrix.count/2) {
+//            for y in 0..<matrix.count {
+//                (matrix[x][y], matrix[x][matrix.count - y - 1]) = (matrix[x][matrix.count - y - 1], matrix[x][y])
+//            }
+//        }
+        for i in 0..<matrix.count {
+            matrix[i].reverse()
+        }
+    }
+}
+
+// MARK: 49. 字母异位词分组
+extension HotProblem {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        var hashMap = [[Character]: [String]]()
+        for str in strs {
+            let chars = Array(str).sorted()
+            hashMap[chars] = (hashMap[chars] ?? []) + [str]
+        }
+        return hashMap.map { $0.value }
     }
 }
