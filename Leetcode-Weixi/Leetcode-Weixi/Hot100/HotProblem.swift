@@ -507,7 +507,6 @@ extension HotProblem {
         var left = 0
         var right = nums.count - 1
         var result = -1
-        let factor = isLower ? -1 : 1
 
         while left <= right {
             let mid = (left + right) / 2
@@ -619,5 +618,69 @@ extension HotProblem {
             hashMap[chars] = (hashMap[chars] ?? []) + [str]
         }
         return hashMap.map { $0.value }
+    }
+}
+
+// MARK: 55. 跳跃游戏
+extension HotProblem {
+    func canJump(_ nums: [Int]) -> Bool {
+        var k = 0
+        for index in nums.indices {
+            if index > k { return false }
+            k = max(k, index + nums[index])
+        }
+        return true
+    }
+}
+
+// MARK: 56. 合并区间
+extension HotProblem {
+    func merge(_ intervals: [[Int]]) -> [[Int]] {
+        var intervals = intervals.sorted { $0[0] < $1[0] }
+        var result = [[Int]]()
+        for interval in intervals {
+            if let last = result.last, interval[0] <= last[1] {
+                result.removeLast()
+                result.append([last[0], max(last[1], interval[1])])
+            } else {
+                result.append(interval)
+            }
+        }
+        return result
+    }
+}
+
+// MARK: 62. 不同路径
+extension HotProblem {
+    func uniquePaths(_ m: Int, _ n: Int) -> Int {
+        var dp = [[Int]](repeating: [Int](repeating: 0, count: n), count: m)
+        for x in 0..<m {
+            for y in 0..<n {
+                if x == 0 || y == 0 {
+                    dp[x][y] = 1
+                } else {
+                    dp[x][y] = dp[x-1][y] + dp[x][y-1]
+                }
+            }
+        }
+        return dp[m-1][n-1]
+    }
+}
+
+// MARK: 70. 爬楼梯
+extension HotProblem {
+    func climbStairs(_ n: Int) -> Int {
+        guard n > 2 else { return n }
+
+        var dp: [Int] = [Int](repeating: 0, count: n)
+
+        for i in 0..<n {
+            if i <= 2 {
+                dp[i] = n
+            } else {
+                dp[i] = dp[i - 1] + dp[i - 2]
+            }
+        }
+        return dp[n - 1]
     }
 }
