@@ -621,6 +621,8 @@ extension HotProblem {
     }
 }
 
+// MARK: - 动态规划专项
+
 // MARK: 55. 跳跃游戏
 extension HotProblem {
     func canJump(_ nums: [Int]) -> Bool {
@@ -636,7 +638,7 @@ extension HotProblem {
 // MARK: 56. 合并区间
 extension HotProblem {
     func merge(_ intervals: [[Int]]) -> [[Int]] {
-        var intervals = intervals.sorted { $0[0] < $1[0] }
+        let intervals = intervals.sorted { $0[0] < $1[0] }
         var result = [[Int]]()
         for interval in intervals {
             if let last = result.last, interval[0] <= last[1] {
@@ -667,6 +669,30 @@ extension HotProblem {
     }
 }
 
+// MARK: 64. 最小路径和
+extension HotProblem {
+    func minPathSum(_ grid: [[Int]]) -> Int {
+        var dp = grid
+
+        for x in dp.indices {
+            for y in dp[x].indices {
+                switch (x, y) {
+                case (0, 0):
+                    continue
+                case (0, _):
+                    dp[x][y] += dp[x][y - 1]
+                case (_, 0):
+                    dp[x][y] += dp[x - 1][y]
+                default:
+                    dp[x][y] += min(dp[x - 1][y], dp[x][y - 1])
+                }
+            }
+        }
+
+        return dp[dp.count - 1][dp[0].count - 1]
+    }
+}
+
 // MARK: 70. 爬楼梯
 extension HotProblem {
     func climbStairs(_ n: Int) -> Int {
@@ -682,5 +708,27 @@ extension HotProblem {
             }
         }
         return dp[n - 1]
+    }
+}
+
+// MARK: 75. 颜色分类
+extension HotProblem {
+    func sortColors(_ nums: inout [Int]) {
+        let count = nums.count
+        var left = 0
+        var right = count - 1
+        var index = 0
+        while index <= right {
+            if nums[index] == 0 {
+                nums.swapAt(index, left)
+                left += 1
+                index += 1
+            } else if nums[index] == 2 {
+                nums.swapAt(index, right)
+                right -= 1
+            } else if nums[index] == 1 {
+                index += 1
+            }
+        }
     }
 }
