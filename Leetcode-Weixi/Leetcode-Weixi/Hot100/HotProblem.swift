@@ -732,3 +732,26 @@ extension HotProblem {
         }
     }
 }
+
+// MARK: 78. 子集
+extension HotProblem {
+    func subsetsHelper(_ nums: inout [Int], _ temp: inout [Int], _ result: inout [[Int]], _ index: Int) {
+        guard index <= nums.count else { return }
+        
+        result.append(temp)
+        
+        for i in index..<nums.count {
+            temp.append(nums[i])
+            subsetsHelper(&nums, &temp, &result, i+1)
+            temp.removeLast()
+        }
+    }
+    
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        var nums = nums
+        var result = [[Int]]()
+        var temp = [Int]()
+        subsetsHelper(&nums, &temp, &result, 0)
+        return result
+    }
+}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		601A71712C5754C600C02C7E /* 240729.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601A71702C5754C600C02C7E /* 240729.swift */; };
 		60389A7429800470005E4E8F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60389A7329800470005E4E8F /* main.swift */; };
 		605C208C298E69B500713490 /* 230204.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C208B298E69B500713490 /* 230204.swift */; };
 		6079D93E2BFC67E900F95652 /* 240521.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6079D93D2BFC67E900F95652 /* 240521.swift */; };
@@ -136,6 +137,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		601A71702C5754C600C02C7E /* 240729.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 240729.swift; sourceTree = "<group>"; };
 		60389A7029800470005E4E8F /* Leetcode-Weixi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Leetcode-Weixi"; sourceTree = BUILT_PRODUCTS_DIR; };
 		60389A7329800470005E4E8F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		605C208B298E69B500713490 /* 230204.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 230204.swift; sourceTree = "<group>"; };
@@ -264,6 +266,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		601A716F2C5754A600C02C7E /* 7 */ = {
+			isa = PBXGroup;
+			children = (
+				601A71702C5754C600C02C7E /* 240729.swift */,
+			);
+			path = 7;
+			sourceTree = "<group>";
+		};
 		60389A6729800470005E4E8F = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +322,7 @@
 				6099E2972B9453BD0005AE35 /* Leetcode2024.swift */,
 				60D8DE182B9ECEAE0021F7E2 /* 3 */,
 				6079D93F2BFC67EF00F95652 /* 5 */,
+				601A716F2C5754A600C02C7E /* 7 */,
 			);
 			path = 2024;
 			sourceTree = "<group>";
@@ -730,6 +741,7 @@
 				A24EF170298B8A90004B6F01 /* 20210317(54).swift in Sources */,
 				A24EF173298B8A90004B6F01 /* 20210314(706).swift in Sources */,
 				60DF0A642C1FF893004A878F /* HotProblem.swift in Sources */,
+				601A71712C5754C600C02C7E /* 240729.swift in Sources */,
 				A24EF130298B8A90004B6F01 /* 201018.swift in Sources */,
 				A24EF153298B8A90004B6F01 /* 210110(228).swift in Sources */,
 				60A76B242B9839BA006A1064 /* 240306.swift in Sources */,
