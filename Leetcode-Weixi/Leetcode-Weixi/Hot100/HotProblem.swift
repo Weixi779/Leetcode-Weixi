@@ -48,83 +48,6 @@ extension HotProblem {
     }
 }
 
-
-// MARK: - 树 专项
-
-// MARK: 102. 二叉树的层序遍历
-extension HotProblem {
-//    // - 递归写法
-//    func levelOrder(_ root: TreeNode?) -> [[Int]] {
-//        var result = [[Int]]()
-//        var height = 0
-//        helper(root, height, &result)
-//        return result
-//    }
-//    
-//    func helper(_ node: TreeNode?, _ height: Int, _ grid: inout [[Int]]) {
-//        guard let node = node else { return }
-//        if grid.count <= height { grid.append([]) }
-//        grid[height].append(node.val)
-//        helper(node.left, height + 1,  &grid)
-//        helper(node.right, height + 1 , &grid)
-//    }
-    // - 遍历写法
-    func levelOrder(_ root: TreeNode?) -> [[Int]] {
-        guard let root = root else { return [[Int]]() }
-        var result = [[Int]]()
-        var nodes: [TreeNode] = [root]
-        var children: [TreeNode] = []
-        while !nodes.isEmpty {
-            var value = [Int]()
-            for node in nodes {
-                value.append(node.val)
-                if let left = node.left { children.append(left) }
-                if let right = node.right { children.append(right) }
-            }
-            result.append(value)
-            nodes = children
-            children = [TreeNode]()
-        }
-        return result
-    }
-    
-    public class Node {
-        public var val: Int
-        public var children: [Node]
-        public init(_ val: Int) {
-            self.val = val
-            self.children = []
-        }
-    }
-//    // - 递归写法
-//    func preorder(_ root: Node?) -> [Int] {
-//        guard let root = root else { return [] }
-//        var result = [Int]()
-//        helper(root, &result)
-//        return result
-//    }
-//    
-//    func helper(_ node: Node?, _ array: inout [Int]) {
-//        guard let node = node else { return }
-//        array.append(node.val)
-//        for child in node.children {
-//            helper(child, &array)
-//        }
-//    }
-//    // - 遍历写法
-    func preorder(_ root: Node?) -> [Int] {
-        guard let root = root else { return [] }
-        var result = [Int]()
-        var queue: [Node] = [root]
-        while !queue.isEmpty {
-            let first = queue.removeFirst()
-            queue = first.children + queue
-            result.append(first.val)
-        }
-        return result
-    }
-}
-
 // MARK: 3. 无重复字符的最长子串
 /*
  算法: 滑动窗口
@@ -536,6 +459,8 @@ extension HotProblem {
     }
 }
 
+// MARK: - DFS 专项
+
 // MARK: 39. 组合总和
 extension HotProblem {
     func combinationSumHelper(_ candidates: [Int], _ target: Int, _ index: Int,  _ sum: Int, _ temp: inout [Int], _ result: inout [[Int]]) {
@@ -587,6 +512,126 @@ extension HotProblem {
         var hashMap = [Int: Bool]()
         pernuteHelper(nums, &hashMap, &result, &temp)
         return result
+    }
+}
+
+// MARK: 78. 子集
+extension HotProblem {
+    func subsetsHelper(_ nums: inout [Int], _ temp: inout [Int], _ result: inout [[Int]], _ index: Int) {
+        guard index <= nums.count else { return }
+        
+        result.append(temp)
+        
+        for i in index..<nums.count {
+            temp.append(nums[i])
+            subsetsHelper(&nums, &temp, &result, i+1)
+            temp.removeLast()
+        }
+    }
+    
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        var nums = nums
+        var result = [[Int]]()
+        var temp = [Int]()
+        subsetsHelper(&nums, &temp, &result, 0)
+        return result
+    }
+}
+
+// MARK: 79. 单词搜索
+extension HotProblem {
+// BFS 版本
+//    func exist(_ board: [[Character]], _ word: String) -> Bool {
+//        guard let first = word.first else { return false }
+//
+//        let chars = [Character](word)
+//
+//        // 建立队列
+//        var quques = [[(Int, Int)]]()
+//        for x in board.indices {
+//            for y in board[x].indices {
+//                if board[x][y] == first {
+//                    quques.append([(x, y)])
+//                }
+//            }
+//        }
+//        // 去除起始位置
+//        for index in 1..<chars.count {
+//            let target = chars[index]
+//            var temp = [[(Int, Int)]]()
+//            while !quques.isEmpty {
+//                let queue = quques.removeFirst()
+//                let nextQueues = existHelper(board, target, queue)
+//                nextQueues.forEach { temp.append($0) }
+//            }
+//            quques = temp
+//        }
+//
+//        return !quques.isEmpty
+//    }
+//
+//    func existHelper(_ board: [[Character]], _ target: Character, _ queue: [(Int, Int)]) -> [[(Int, Int)]] {
+//        let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+//        var reuslt = [[(Int, Int)]]()
+//        let last = queue.last!
+//        for direction in directions {
+//            let x = last.0 + direction.0
+//            let y = last.1 + direction.1
+//
+//            guard x >= 0 && x < board.count else { continue }
+//            guard y >= 0 && y < board[x].count else { continue }
+//
+//            if board[x][y] == target && !queue.contains(where: { $0.0 == x && $0.1 == y}) {
+//                reuslt.append(queue + [(x, y)])
+//            }
+//        }
+//        return reuslt
+//    }
+    
+    func exist(_ board: [[Character]], _ word: String) -> Bool {
+        guard !word.isEmpty else { return false }
+        
+        let chars = Array(word)
+        
+        for x in board.indices {
+            for y in board[x].indices {
+                if board[x][y] == chars[0] {
+                    var visited = Set<[Int]>()
+                    visited.insert([x, y])
+                    if existHelper(board, chars, 1, (x, y), &visited) {
+                        return true
+                    }
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func existHelper(_ board: [[Character]], _ chars: [Character], _ target: Int, _ current: (Int, Int), _ visited: inout Set<[Int]>) -> Bool {
+        if target == chars.count { return true }
+        
+        let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        for direction in directions {
+            let x = current.0 + direction.0
+            let y = current.1 + direction.1
+            
+            guard x >= 0 && x < board.count else { continue }
+            guard y >= 0 && y < board[x].count else { continue }
+            
+            if board[x][y] == chars[target] && !visited.contains([x, y]) {
+                visited.insert([x, y])
+                
+                if existHelper(board, chars, target + 1, (x, y), &visited) {
+                    return true
+                }
+                
+                visited.remove([x, y])
+            }
+        }
+        
+        return false
     }
 }
 
@@ -733,25 +778,121 @@ extension HotProblem {
     }
 }
 
-// MARK: 78. 子集
+// MARK: - 树 专项
+
+
 extension HotProblem {
-    func subsetsHelper(_ nums: inout [Int], _ temp: inout [Int], _ result: inout [[Int]], _ index: Int) {
-        guard index <= nums.count else { return }
-        
-        result.append(temp)
-        
-        for i in index..<nums.count {
-            temp.append(nums[i])
-            subsetsHelper(&nums, &temp, &result, i+1)
-            temp.removeLast()
+    // MARK: 102. 二叉树的层序遍历
+//    // - 递归写法
+//    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+//        var result = [[Int]]()
+//        var height = 0
+//        helper(root, height, &result)
+//        return result
+//    }
+//
+//    func helper(_ node: TreeNode?, _ height: Int, _ grid: inout [[Int]]) {
+//        guard let node = node else { return }
+//        if grid.count <= height { grid.append([]) }
+//        grid[height].append(node.val)
+//        helper(node.left, height + 1,  &grid)
+//        helper(node.right, height + 1 , &grid)
+//    }
+    // - 遍历写法
+    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+        guard let root = root else { return [[Int]]() }
+        var result = [[Int]]()
+        var nodes: [TreeNode] = [root]
+        var children: [TreeNode] = []
+        while !nodes.isEmpty {
+            var value = [Int]()
+            for node in nodes {
+                value.append(node.val)
+                if let left = node.left { children.append(left) }
+                if let right = node.right { children.append(right) }
+            }
+            result.append(value)
+            nodes = children
+            children = [TreeNode]()
         }
+        return result
     }
     
-    func subsets(_ nums: [Int]) -> [[Int]] {
-        var nums = nums
-        var result = [[Int]]()
-        var temp = [Int]()
-        subsetsHelper(&nums, &temp, &result, 0)
+    public class Node {
+        public var val: Int
+        public var children: [Node]
+        public init(_ val: Int) {
+            self.val = val
+            self.children = []
+        }
+    }
+//    // - 递归写法
+//    func preorder(_ root: Node?) -> [Int] {
+//        guard let root = root else { return [] }
+//        var result = [Int]()
+//        helper(root, &result)
+//        return result
+//    }
+//
+//    func helper(_ node: Node?, _ array: inout [Int]) {
+//        guard let node = node else { return }
+//        array.append(node.val)
+//        for child in node.children {
+//            helper(child, &array)
+//        }
+//    }
+//    // - 遍历写法
+    func preorder(_ root: Node?) -> [Int] {
+        guard let root = root else { return [] }
+        var result = [Int]()
+        var queue: [Node] = [root]
+        while !queue.isEmpty {
+            let first = queue.removeFirst()
+            queue = first.children + queue
+            result.append(first.val)
+        }
         return result
+    }
+    
+    // MARK: 94. 二叉树的中序遍历
+    // 递归
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        return inorderTraversal(root.left) + [root.val] + inorderTraversal(root.right)
+    }
+    // 遍历
+//    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+//        var result = [Int]()
+//        var stack = [TreeNode]()
+//        var current = root
+//        
+//        while current != nil || !stack.isEmpty {
+//            // 先遍历到最左边的节点
+//            while let node = current {
+//                stack.append(node)
+//                current = node.left
+//            }
+//            // 处理最左边的节点
+//            current = stack.removeLast()
+//            result.append(current!.val)
+//            // 遍历右子树
+//            current = current?.right
+//        }
+//        
+//        return result
+//    }
+    
+    // MARK: 98. 验证二叉搜索树 / 可用中序遍历方案 /
+    func isValidBST(_ root: TreeNode?) -> Bool {
+        return isValidBSTHelper(root, nil, nil)
+    }
+
+    func isValidBSTHelper(_ node: TreeNode?, _ min: Int?, _ max: Int?) -> Bool {
+        guard let node = node else { return true }
+        
+        if let min = min, node.val <= min { return false }
+        if let max = max, node.val >= max { return false }
+        
+        return isValidBSTHelper(node.left, min, node.val) && isValidBSTHelper(node.right, node.val, max)
     }
 }
