@@ -782,50 +782,7 @@ extension HotProblem {
 
 
 extension HotProblem {
-    // MARK: 102. 二叉树的层序遍历
-//    // - 递归写法
-//    func levelOrder(_ root: TreeNode?) -> [[Int]] {
-//        var result = [[Int]]()
-//        var height = 0
-//        helper(root, height, &result)
-//        return result
-//    }
-//
-//    func helper(_ node: TreeNode?, _ height: Int, _ grid: inout [[Int]]) {
-//        guard let node = node else { return }
-//        if grid.count <= height { grid.append([]) }
-//        grid[height].append(node.val)
-//        helper(node.left, height + 1,  &grid)
-//        helper(node.right, height + 1 , &grid)
-//    }
-    // - 遍历写法
-    func levelOrder(_ root: TreeNode?) -> [[Int]] {
-        guard let root = root else { return [[Int]]() }
-        var result = [[Int]]()
-        var nodes: [TreeNode] = [root]
-        var children: [TreeNode] = []
-        while !nodes.isEmpty {
-            var value = [Int]()
-            for node in nodes {
-                value.append(node.val)
-                if let left = node.left { children.append(left) }
-                if let right = node.right { children.append(right) }
-            }
-            result.append(value)
-            nodes = children
-            children = [TreeNode]()
-        }
-        return result
-    }
     
-    public class Node {
-        public var val: Int
-        public var children: [Node]
-        public init(_ val: Int) {
-            self.val = val
-            self.children = []
-        }
-    }
 //    // - 递归写法
 //    func preorder(_ root: Node?) -> [Int] {
 //        guard let root = root else { return [] }
@@ -894,5 +851,71 @@ extension HotProblem {
         if let max = max, node.val >= max { return false }
         
         return isValidBSTHelper(node.left, min, node.val) && isValidBSTHelper(node.right, node.val, max)
+    }
+    
+    // MARK: 101. 对称二叉树
+    func isSymmetric(_ root: TreeNode?) -> Bool {
+        guard let root = root else { return true }
+        return isSymmetricHelper(root.left, root.right)
+    }
+    
+    func isSymmetricHelper(_ left: TreeNode?, _ right: TreeNode?) -> Bool {
+        if left == nil && right == nil { return true }
+        guard let left = left, let right = right else { return false }
+        return left.val == right.val && isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left)
+        // 注意入参内容
+    }
+    
+    // MARK: 102. 二叉树的层序遍历
+//    // - 递归写法
+//    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+//        var result = [[Int]]()
+//        levelOrderHelper(root, 0, &result)
+//        return result
+//    }
+//    
+//    func levelOrderHelper(_ root: TreeNode?, _ height: Int, _ result: inout [[Int]]) {
+//        guard let root = root else { return }
+//        if result.count <= height { result.append([Int]()) }
+//        result[height].append(root.val)
+//        levelOrderHelper(root.left, height + 1, &result)
+//        levelOrderHelper(root.right, height + 1, &result)
+//    }
+//    // - 遍历写法
+    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+        guard let root = root else { return [[Int]]() }
+        var result = [[Int]]()
+        var queue: [TreeNode] = [root]
+        while !queue.isEmpty {
+            result.append( queue.map {$0.val} )
+            var next = [TreeNode]()
+            for node in queue {
+                if let left = node.left { next.append(left) }
+                if let right = node.right { next.append(right) }
+            }
+            queue = next
+        }
+        return result
+    }
+    
+    // MARK: 104. 二叉树的最大深度
+    func maxDepth(_ root: TreeNode?) -> Int {
+        guard let root = root else { return 0 }
+        return max(maxDepth(root.left), maxDepth(root.right)) + 1
+    }
+    
+    // MARK: 114. 二叉树展开为链表
+    func flatten(_ root: TreeNode?) {
+        guard let root = root else { return }
+        var nodes = flattenHelper(root)
+        for index in 0..<nodes.count - 1 {
+            nodes[index].right = nodes[index + 1]
+            nodes[index].left = nil
+        }
+    }
+    
+    func flattenHelper(_ root: TreeNode?) -> [TreeNode] {
+        guard let root = root else { return [] }
+        return [root] + flattenHelper(root.left) + flattenHelper(root.right)
     }
 }
