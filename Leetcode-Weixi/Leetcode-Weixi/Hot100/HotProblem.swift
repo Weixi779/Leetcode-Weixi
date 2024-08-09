@@ -756,6 +756,17 @@ extension HotProblem {
     }
 }
 
+// MARK: 121. 买卖股票的最佳时机
+func maxProfit(_ prices: [Int]) -> Int {
+    var tradeIn = Int.max
+    var result = 0
+    for price in prices {
+        tradeIn = min(price, tradeIn)
+        result = max(result, price - tradeIn)
+    }
+    return result
+}
+
 // MARK: 75. 颜色分类
 extension HotProblem {
     func sortColors(_ nums: inout [Int]) {
