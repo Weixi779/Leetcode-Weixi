@@ -770,6 +770,26 @@ extension HotProblem {
         }
         return result
     }
+    
+    // MARK: 139. 单词拆分
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        var dp = [Bool](repeating: false, count: s.count + 1)
+        dp[0] = true
+        
+        let chars = [Character](s)
+        
+        for i in 1...chars.count {
+            for j in 0..<i {
+                let word = String(chars[j..<i])
+                if dp[j] && wordDict.contains(word) {
+                    dp[i] = true
+                    break
+                }
+            }
+        }
+        
+        return dp[s.count]
+    }
 }
 
 // MARK: - 树 专项
@@ -899,7 +919,7 @@ extension HotProblem {
     // MARK: 114. 二叉树展开为链表
     func flatten(_ root: TreeNode?) {
         guard let root = root else { return }
-        var nodes = flattenHelper(root)
+        let nodes = flattenHelper(root)
         for index in 0..<nodes.count - 1 {
             nodes[index].right = nodes[index + 1]
             nodes[index].left = nil
@@ -909,5 +929,34 @@ extension HotProblem {
     func flattenHelper(_ root: TreeNode?) -> [TreeNode] {
         guard let root = root else { return [] }
         return [root] + flattenHelper(root.left) + flattenHelper(root.right)
+    }
+    
+    // MARK: 141. 环形链表
+    func hasCycle(_ head: ListNode?) -> Bool {
+        var fast = head
+        var slow = head
+        
+        while fast != nil {
+            fast = fast?.next?.next
+            if slow === fast {
+                return true
+            }
+            slow = slow?.next
+        }
+        return false
+    }
+}
+
+
+// MARK: - 位运算
+extension HotProblem {
+    // MARK: 136. 只出现一次的数字
+    func singleNumber(_ nums: [Int]) -> Int {
+//        var bits = 0
+//        for num in nums {
+//            bits ^= num
+//        }
+//        return bits
+        return nums.reduce(0, ^)
     }
 }

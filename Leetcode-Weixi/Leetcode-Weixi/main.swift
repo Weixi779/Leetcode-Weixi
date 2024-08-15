@@ -32,4 +32,5 @@ let hot = HotProblem()
 //print(matrix)
 
 //print(hot.minPathSum([[1,2,3],[4,5,6]]))
-print(hot.exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
+//print(hot.exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
+print(hot.wordBreak("leetcode", ["leet", "code"]))
