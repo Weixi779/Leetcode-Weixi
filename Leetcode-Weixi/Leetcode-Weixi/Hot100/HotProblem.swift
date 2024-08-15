@@ -693,95 +693,6 @@ extension HotProblem {
         }
         return result
     }
-    
-    // MARK: 146. LRU 缓存
-    class LRUCache {
-        
-        class DoublyNode {
-            var key: Int
-            var value: Int
-            var previous: DoublyNode?
-            var next: DoublyNode?
-            
-            init(key: Int, value: Int, previous: DoublyNode? = nil, next: DoublyNode? = nil) {
-                self.key = key
-                self.value = value
-                self.previous = previous
-                self.next = next
-            }
-        }
-        
-        var max: Int
-        var firstNode: DoublyNode?
-        var lastNode: DoublyNode?
-        var map: [Int: DoublyNode]
-
-        init(_ capacity: Int) {
-            self.max = capacity
-            self.firstNode = nil
-            self.lastNode = nil
-            self.map = [Int: DoublyNode]()
-        }
-        
-        func get(_ key: Int) -> Int {
-            guard let node = self.map[key] else { return -1 }
-            self.moveToLast(node)
-            return node.value
-        }
-        
-        func put(_ key: Int, _ value: Int) {
-            guard map[key] == nil else {
-                let node = map[key]!
-                node.value = value
-                moveToLast(node)
-                return
-            }
-            
-            if map.keys.count == max {
-                if let firstNode = firstNode {
-                    map.removeValue(forKey: firstNode.key)
-                    removeNode(firstNode)
-                }
-            }
-            
-            let newNode = DoublyNode(key: key, value: value)
-            addNodeToLast(newNode)
-            map[key] = newNode
-        }
-        
-        private func moveToLast(_ node: DoublyNode) {
-            removeNode(node)
-            addNodeToLast(node)
-        }
-        
-        private func removeNode(_ node: DoublyNode) {
-            if let prev = node.previous {
-                prev.next = node.next
-            } else {
-                firstNode = node.next
-            }
-            
-            if let next = node.next {
-                next.previous = node.previous
-            } else {
-                lastNode = node.previous
-            }
-            
-            node.previous = nil
-            node.next = nil
-        }
-        
-        private func addNodeToLast(_ node: DoublyNode) {
-            guard let last = lastNode else {
-                firstNode = node
-                lastNode = node
-                return
-            }
-            last.next = node
-            node.previous = last
-            lastNode = node
-        }
-    }
 }
 
 // MARK: - 动态规划专项
@@ -1057,6 +968,95 @@ extension HotProblem {
             slow = slow?.next
         }
         return node
+    }
+    
+    // MARK: 146. LRU 缓存
+    class LRUCache {
+        
+        class DoublyNode {
+            var key: Int
+            var value: Int
+            var previous: DoublyNode?
+            var next: DoublyNode?
+            
+            init(key: Int, value: Int, previous: DoublyNode? = nil, next: DoublyNode? = nil) {
+                self.key = key
+                self.value = value
+                self.previous = previous
+                self.next = next
+            }
+        }
+        
+        var max: Int
+        var firstNode: DoublyNode?
+        var lastNode: DoublyNode?
+        var map: [Int: DoublyNode]
+
+        init(_ capacity: Int) {
+            self.max = capacity
+            self.firstNode = nil
+            self.lastNode = nil
+            self.map = [Int: DoublyNode]()
+        }
+        
+        func get(_ key: Int) -> Int {
+            guard let node = self.map[key] else { return -1 }
+            self.moveToLast(node)
+            return node.value
+        }
+        
+        func put(_ key: Int, _ value: Int) {
+            guard map[key] == nil else {
+                let node = map[key]!
+                node.value = value
+                moveToLast(node)
+                return
+            }
+            
+            if map.keys.count == max {
+                if let firstNode = firstNode {
+                    map.removeValue(forKey: firstNode.key)
+                    removeNode(firstNode)
+                }
+            }
+            
+            let newNode = DoublyNode(key: key, value: value)
+            addNodeToLast(newNode)
+            map[key] = newNode
+        }
+        
+        private func moveToLast(_ node: DoublyNode) {
+            removeNode(node)
+            addNodeToLast(node)
+        }
+        
+        private func removeNode(_ node: DoublyNode) {
+            if let prev = node.previous {
+                prev.next = node.next
+            } else {
+                firstNode = node.next
+            }
+            
+            if let next = node.next {
+                next.previous = node.previous
+            } else {
+                lastNode = node.previous
+            }
+            
+            node.previous = nil
+            node.next = nil
+        }
+        
+        private func addNodeToLast(_ node: DoublyNode) {
+            guard let last = lastNode else {
+                firstNode = node
+                lastNode = node
+                return
+            }
+            last.next = node
+            node.previous = last
+            lastNode = node
+        }
     }
 }
 
