@@ -521,6 +521,35 @@ extension HotProblem {
         }
         return result
     }
+    
+    // MARK: 155. 最小栈
+    class MinStack {
+        
+        var stack: [(Int, Int)] = []
+        
+        init() {
+        }
+
+        func push(_ val: Int) {
+            guard let last = stack.last else {
+                stack.append((val, val))
+                return
+            }
+            stack.append((val, min(last.1, val)))
+        }
+        
+        func pop() {
+            stack.removeLast()
+        }
+        
+        func top() -> Int {
+            return stack.last?.0 ?? -1
+        }
+        
+        func getMin() -> Int {
+            return stack.last?.1 ?? -1
+        }
+    }
 }
 
 // MARK: - 链表
@@ -575,6 +604,171 @@ extension HotProblem {
         let right = mergeKLists(Array(lists[mid..<lists.count]))
         
         return mergeTwoLists(left, right)
+    }
+    
+    // MARK: 141. 环形链表
+    func hasCycle(_ head: ListNode?) -> Bool {
+        var fast = head
+        var slow = head
+        
+        while fast != nil {
+            fast = fast?.next?.next
+            if slow === fast {
+                return true
+            }
+            slow = slow?.next
+        }
+        return false
+    }
+    
+    // MARK: 142. 环形链表 II
+    func detectCycle(_ head: ListNode?) -> ListNode? {
+        var fast = head
+        var slow = head
+        var node: ListNode?
+        
+        while fast != nil, fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+            if slow === fast {
+                node = head
+                break
+            }
+        }
+        
+        guard node != nil else { return nil }
+        
+        while node !== slow {
+            node = node?.next
+            slow = slow?.next
+        }
+        return node
+    }
+    
+    // MARK: 146. LRU 缓存
+    class LRUCache {
+        
+        class DoublyNode {
+            var key: Int
+            var value: Int
+            var previous: DoublyNode?
+            var next: DoublyNode?
+            
+            init(key: Int, value: Int, previous: DoublyNode? = nil, next: DoublyNode? = nil) {
+                self.key = key
+                self.value = value
+                self.previous = previous
+                self.next = next
+            }
+        }
+        
+        var max: Int
+        var firstNode: DoublyNode?
+        var lastNode: DoublyNode?
+        var map: [Int: DoublyNode]
+
+        init(_ capacity: Int) {
+            self.max = capacity
+            self.firstNode = nil
+            self.lastNode = nil
+            self.map = [Int: DoublyNode]()
+        }
+        
+        func get(_ key: Int) -> Int {
+            guard let node = self.map[key] else { return -1 }
+            self.moveToLast(node)
+            return node.value
+        }
+        
+        func put(_ key: Int, _ value: Int) {
+            guard map[key] == nil else {
+                let node = map[key]!
+                node.value = value
+                moveToLast(node)
+                return
+            }
+            
+            if map.keys.count == max {
+                if let firstNode = firstNode {
+                    map.removeValue(forKey: firstNode.key)
+                    removeNode(firstNode)
+                }
+            }
+            
+            let newNode = DoublyNode(key: key, value: value)
+            addNodeToLast(newNode)
+            map[key] = newNode
+        }
+        
+        private func moveToLast(_ node: DoublyNode) {
+            removeNode(node)
+            addNodeToLast(node)
+        }
+        
+        private func removeNode(_ node: DoublyNode) {
+            if let prev = node.previous {
+                prev.next = node.next
+            } else {
+                firstNode = node.next
+            }
+            
+            if let next = node.next {
+                next.previous = node.previous
+            } else {
+                lastNode = node.previous
+            }
+            
+            node.previous = nil
+            node.next = nil
+        }
+        
+        private func addNodeToLast(_ node: DoublyNode) {
+            guard let last = lastNode else {
+                firstNode = node
+                lastNode = node
+                return
+            }
+            last.next = node
+            node.previous = last
+            lastNode = node
+        }
+    }
+    
+    // MARK: 148. 排序链表
+    func sortList(_ head: ListNode?) -> ListNode? {
+        guard let head = head else { return nil }
+        
+        var nodes = [ListNode]()
+        var current: ListNode? = head
+        
+        while current != nil {
+            nodes.append(current!)
+            current = current?.next
+        }
+        
+        nodes.sort { $0.val < $1.val }
+        
+        for index in 0..<nodes.count - 1 {
+            nodes[index].next = nodes[index + 1]
+        }
+        
+        nodes.last?.next = nil
+        
+        return nodes.first
+    }
+    
+    // MARK: 160. 相交链表
+    func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
+        guard let headA = headA, let headB = headB else { return nil }
+        var nodeA: ListNode? = headA
+        var nodeB: ListNode? = headB
+        
+        while nodeA !== nodeB {
+            nodeA = (nodeA != nil) ? nodeA?.next : headB
+            nodeB = (nodeB != nil) ? nodeB?.next : headA
+        }
+        
+        return nodeA
     }
 }
 
@@ -929,134 +1123,6 @@ extension HotProblem {
     func flattenHelper(_ root: TreeNode?) -> [TreeNode] {
         guard let root = root else { return [] }
         return [root] + flattenHelper(root.left) + flattenHelper(root.right)
-    }
-    
-    // MARK: 141. 环形链表
-    func hasCycle(_ head: ListNode?) -> Bool {
-        var fast = head
-        var slow = head
-        
-        while fast != nil {
-            fast = fast?.next?.next
-            if slow === fast {
-                return true
-            }
-            slow = slow?.next
-        }
-        return false
-    }
-    
-    // MARK: 142. 环形链表 II
-    func detectCycle(_ head: ListNode?) -> ListNode? {
-        var fast = head
-        var slow = head
-        var node: ListNode?
-        
-        while fast != nil, fast?.next != nil {
-            slow = slow?.next
-            fast = fast?.next?.next
-            if slow === fast {
-                node = head
-                break
-            }
-        }
-        
-        guard node != nil else { return nil }
-        
-        while node !== slow {
-            node = node?.next
-            slow = slow?.next
-        }
-        return node
-    }
-    
-    // MARK: 146. LRU 缓存
-    class LRUCache {
-        
-        class DoublyNode {
-            var key: Int
-            var value: Int
-            var previous: DoublyNode?
-            var next: DoublyNode?
-            
-            init(key: Int, value: Int, previous: DoublyNode? = nil, next: DoublyNode? = nil) {
-                self.key = key
-                self.value = value
-                self.previous = previous
-                self.next = next
-            }
-        }
-        
-        var max: Int
-        var firstNode: DoublyNode?
-        var lastNode: DoublyNode?
-        var map: [Int: DoublyNode]
-
-        init(_ capacity: Int) {
-            self.max = capacity
-            self.firstNode = nil
-            self.lastNode = nil
-            self.map = [Int: DoublyNode]()
-        }
-        
-        func get(_ key: Int) -> Int {
-            guard let node = self.map[key] else { return -1 }
-            self.moveToLast(node)
-            return node.value
-        }
-        
-        func put(_ key: Int, _ value: Int) {
-            guard map[key] == nil else {
-                let node = map[key]!
-                node.value = value
-                moveToLast(node)
-                return
-            }
-            
-            if map.keys.count == max {
-                if let firstNode = firstNode {
-                    map.removeValue(forKey: firstNode.key)
-                    removeNode(firstNode)
-                }
-            }
-            
-            let newNode = DoublyNode(key: key, value: value)
-            addNodeToLast(newNode)
-            map[key] = newNode
-        }
-        
-        private func moveToLast(_ node: DoublyNode) {
-            removeNode(node)
-            addNodeToLast(node)
-        }
-        
-        private func removeNode(_ node: DoublyNode) {
-            if let prev = node.previous {
-                prev.next = node.next
-            } else {
-                firstNode = node.next
-            }
-            
-            if let next = node.next {
-                next.previous = node.previous
-            } else {
-                lastNode = node.previous
-            }
-            
-            node.previous = nil
-            node.next = nil
-        }
-        
-        private func addNodeToLast(_ node: DoublyNode) {
-            guard let last = lastNode else {
-                firstNode = node
-                lastNode = node
-                return
-            }
-            last.next = node
-            node.previous = last
-            lastNode = node
-        }
     }
 }
 
