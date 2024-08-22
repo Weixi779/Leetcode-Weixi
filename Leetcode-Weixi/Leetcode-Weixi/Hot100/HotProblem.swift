@@ -176,6 +176,18 @@ extension HotProblem {
             }
         }
     }
+    
+    // MARK: 169. 多数元素
+    func majorityElement(_ nums: [Int]) -> Int {
+        var hashMap = [Int: Int]()
+        for num in nums {
+            hashMap[num] = (hashMap[num] ?? 0) + 1
+        }
+        let result = hashMap
+            .sorted { $0.value > $1.value }
+            .first
+        return result?.key ?? 0
+    }
 }
 
 // MARK: - 滑动窗口
@@ -481,6 +493,49 @@ extension HotProblem {
         }
         
         return false
+    }
+    
+    // MARK: 200. 岛屿数量
+    func numIslands(_ grid: [[Character]]) -> Int {
+        var result = 0
+        var visited = [[Bool]](repeating: [Bool](repeating: false, count: grid[0].count), count: grid.count)
+        for x in grid.indices {
+            for y in grid[0].indices {
+                if grid[x][y] == "1", visited[x][y] == false {
+                    visited[x][y] = true
+                    result += 1
+                    numIslandsHelper((x, y), &visited, grid)
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    private func numIslandsVaild(_ position: (Int, Int),
+                                 _ direction: (Int, Int),
+                                 _ limit: (Int, Int)
+    ) -> Bool {
+        let x = position.0 + direction.0
+        let y = position.1 + direction.1
+        return x >= 0 && x < limit.0 && y >= 0 && y < limit.1
+    }
+    
+    func numIslandsHelper(_ position: (Int, Int),
+                          _ visited: inout [[Bool]],
+                          _ grid: [[Character]]) {
+        let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        for direction in directions {
+            let isVaild = numIslandsVaild(position, direction, (grid.count, grid[0].count))
+            guard isVaild else { continue }
+            let x = position.0 + direction.0
+            let y = position.1 + direction.1
+            if grid[x][y] == "1" && visited[x][y] == false {
+                visited[x][y] = true
+                numIslandsHelper((x,y), &visited, grid)
+            }
+        }
     }
 }
 
@@ -983,6 +1038,24 @@ extension HotProblem {
         }
         
         return dp[s.count]
+    }
+    
+    // MARK: 198. 打家劫舍
+    func rob(_ nums: [Int]) -> Int {
+        var dp = [Int]()
+        // dp 的 索引比 index 多一个
+        dp.append(0)
+        for index in nums.indices {
+            // 不需要求和
+            guard index != 0 else {
+                dp.append(nums[index])
+                continue
+            }
+            
+            dp.append(max(dp[index], dp[index-1] + nums[index]))
+        }
+        
+        return dp.last ?? 0
     }
 }
 
