@@ -825,6 +825,18 @@ extension HotProblem {
         
         return nodeA
     }
+    
+    // MARK: 206. 反转链表
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        var dummy: ListNode? = ListNode(-1, head)
+        var current = head
+        while let next = current?.next {
+            current?.next = next.next
+            next.next = dummy?.next
+            dummy?.next = next
+        }
+        return dummy?.next
+    }
 }
 
 // MARK: - 二分查找
