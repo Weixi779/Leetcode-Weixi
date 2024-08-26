@@ -31,3 +31,32 @@ extension LeetCode2024.July {
         return stack.reduce(0, +)
     }
 }
+
+// - 题目: 682. 棒球比赛
+// - 地址: https://leetcode.cn/problems/employee-importance/
+extension LeetCode2024.July {
+    
+    public class Employee {
+        public var id: Int
+        public var importance: Int
+        public var subordinates: [Int]
+        public init(_ id: Int, _ importance: Int, _ subordinates: [Int]) {
+            self.id = id
+            self.importance = importance
+            self.subordinates = subordinates
+        }
+    }
+    
+    func getImportance(_ employees: [Employee], _ id: Int) -> Int {
+        var result = 0
+        var employeesMap: [Int: Employee] = Dictionary(uniqueKeysWithValues: employees.map { ($0.id, $0) })
+        var queue: [Employee] = [employeesMap[id]!]
+        while !queue.isEmpty {
+            let first = queue.removeFirst()
+            result += first.importance
+            let subEmployees = first.subordinates.compactMap { employeesMap[$0] }
+            queue = queue + subEmployees
+        }
+        return result
+    }
+}
