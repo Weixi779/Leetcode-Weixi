@@ -32,7 +32,7 @@ extension LeetCode2024.July {
     }
 }
 
-// - 题目: 682. 棒球比赛
+// - 题目: 690. 员工的重要性
 // - 地址: https://leetcode.cn/problems/employee-importance/
 extension LeetCode2024.July {
     
@@ -49,7 +49,7 @@ extension LeetCode2024.July {
     
     func getImportance(_ employees: [Employee], _ id: Int) -> Int {
         var result = 0
-        var employeesMap: [Int: Employee] = Dictionary(uniqueKeysWithValues: employees.map { ($0.id, $0) })
+        let employeesMap: [Int: Employee] = Dictionary(uniqueKeysWithValues: employees.map { ($0.id, $0) })
         var queue: [Employee] = [employeesMap[id]!]
         while !queue.isEmpty {
             let first = queue.removeFirst()
