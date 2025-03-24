@@ -25,27 +25,6 @@ extension HotProblem {
         return []
     }
     
-    // MARK: 2. 两数相加
-    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        let head = ListNode()
-        var node = head
-        var l1 = l1, l2 = l2
-        var carry = false
-        while (l1 != nil || l2 != nil) {
-            var nextValue = (l1?.val ?? 0) + (l2?.val ?? 0) + (carry == true ? 1 : 0)
-            carry = nextValue >= 10
-            nextValue = nextValue % 10
-            node.next = ListNode(nextValue)
-            node = node.next!
-            l1 = l1?.next
-            l2 = l2?.next
-        }
-        if carry == true {
-            node.next = ListNode(1)
-        }
-        return head.next
-    }
-    
     // - MARK: 4. 寻找两个正序数组的中位数
     func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
         let count = nums1.count + nums2.count
@@ -609,6 +588,26 @@ extension HotProblem {
 
 // MARK: - 链表
 extension HotProblem {
+    // MARK: 2. 两数相加
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let head = ListNode()
+        var node = head
+        var l1 = l1, l2 = l2
+        var carry = false
+        while (l1 != nil || l2 != nil) {
+            var nextValue = (l1?.val ?? 0) + (l2?.val ?? 0) + (carry == true ? 1 : 0)
+            carry = nextValue >= 10
+            nextValue = nextValue % 10
+            node.next = ListNode(nextValue)
+            node = node.next!
+            l1 = l1?.next
+            l2 = l2?.next
+        }
+        if carry == true {
+            node.next = ListNode(1)
+        }
+        return head.next
+    }
     
     // MARK: 19. 删除链表的倒数第 N 个结点
    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
@@ -1222,5 +1221,527 @@ extension HotProblem {
 //        }
 //        return bits
         return nums.reduce(0, ^)
+    }
+}
+
+struct HotProblem2025 {
+    /*
+     1. 两数之和
+     给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
+     你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。
+     你可以按任意顺序返回答案。
+     */
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+//        // 法1: 双层循环
+//        for outer in 0..<nums.count - 1 {
+//            for inner in outer+1..<nums.count {
+//                let targetValue = target - nums[outer]
+//                if targetValue == nums[inner] {
+//                    return [outer, inner]
+//                }
+//            }
+//        }
+        
+//        // 法2: 两次遍历
+//        var map = Dictionary(uniqueKeysWithValues: nums.enumerated().map { ($1, $0) })
+//
+//        var map = nums.enumerated().reduce(into: [Int: Int]()) { result, reducer in
+//            result[reducer.element] = reducer.offset
+//        }
+//        
+//        for (num, index) in map {
+//            let targetValue = target - num
+//            if let targetIndex = map[targetValue], targetIndex != index {
+//                return [index, targetIndex]
+//            }
+//        }
+        
+//        // 法3: 一次遍历
+//        var map = [Int: Int]()
+//        
+//        for (index, num) in nums.enumerated() {
+//            let targetValue = target - num
+//            if let targetIndex = map[targetValue] {
+//                return [index, targetIndex]
+//            }
+//            map[num] = index
+//        }
+        
+        return []
+    }
+    
+    /*
+     2. 两数相加
+     给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+     请你将两个数相加，并以相同形式返回一个表示和的链表。
+     你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+     */
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let dummy: ListNode = .init()
+        var current = dummy
+        
+        var (node1, node2) = (l1, l2)
+        var carry = 0
+        
+        while node1 != nil || node2 != nil || carry > 0 {
+            let sum = (node1?.val ?? 0) + (node2?.val ?? 0) + carry
+            
+            carry = sum / 10
+            
+            let node: ListNode = .init(sum % 10)
+            current.next = node
+            current = node
+            
+            node1 = node1?.next
+            node2 = node2?.next
+        }
+        
+        return dummy.next
+    }
+    
+    /*
+     4. 寻找两个正序数组的中位数
+     给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+     算法的时间复杂度应该为 O(log (m+n)) 。
+     */
+    
+    func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
+        // 0,1,2 count = 3 => result = 1
+        // 0,1,2,3 count = 4 => result = 1, 2
+        let sorted = (nums1 + nums2).sorted()
+        let count = sorted.count
+        let mid = count / 2
+        if count % 2 == 0 {
+            return Double(sorted[mid - 1] + sorted[mid]) / 2.0
+        } else {
+            return Double(sorted[mid])
+        }
+    }
+    /*
+     11. 盛最多水的容器
+     给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+     找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+     返回容器可以储存的最大水量。
+     */
+    func maxArea(_ height: [Int]) -> Int {
+        var result = 0
+        var left = 0
+        var right = height.count - 1
+        
+        while left < right {
+            let area = (right - left) * min(height[left], height[right])
+            
+            result = max(result, area)
+            
+            if height[left] > height[right] {
+                right -= 1
+            } else {
+                left += 1
+            }
+        }
+        
+        return result
+    }
+    
+    /*
+     15. 三数之和
+     给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
+     注意：答案中不可以包含重复的三元组。
+     */
+    
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        let nums = nums.sorted()
+        var result = Set<[Int]>()
+        
+        for index in nums.indices {
+            if (nums[index] > 0) { break }
+            
+            if (index > 0 && nums[index] == nums[index - 1]) { continue }
+            
+            var left = index + 1
+            var right = nums.count - 1
+            
+            while right > left {
+                if (nums[index] + nums[left] + nums[right]) > 0 {
+                    right -= 1
+                } else if (nums[index] + nums[left] + nums[right]) < 0 {
+                    left += 1
+                } else {
+                    result.insert([nums[index],nums[left],nums[right]])
+                    
+                    while right > left && nums[right] == nums[right - 1] { right -= 1}
+                    while right > left && nums[left] == nums[left + 1] { left += 1}
+                    
+                    right -= 1
+                    left += 1
+                }
+            }
+        }
+        
+        return result.map { $0 }
+    }
+    
+    /*
+     48. 旋转图像
+     给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
+     你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
+     */
+    func rotate(_ matrix: inout [[Int]]) {
+        for row in matrix.indices {
+            for col in 0..<row {
+                (matrix[row][col], matrix[col][row]) = (matrix[col][row], matrix[row][col])
+            }
+        }
+        
+        for row in matrix.indices {
+            matrix[row] = matrix[row].reversed()
+        }
+    }
+    
+    
+    func myPow(_ x: Double, _ n: Int) -> Double {
+        if n == 0 {
+            return Double(1)
+        }
+        let origin = x
+        var result = Double(1)
+        for _ in 0..<abs(n) {
+            result *= origin
+        }
+        if n > 0 {
+            return result
+        } else {
+            return 1 / result
+        }
+    }
+    
+    /*
+     56. 合并区间
+     以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回
+     一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+     */
+    
+    func merge(_ intervals: [[Int]]) -> [[Int]] {
+        var result = [[Int]]()
+        let intervals = intervals.sorted { $0[0] < $1[0] }
+        for interval in intervals {
+            if let last = result.last, last[1] >= interval[0] {
+                result.removeLast()
+                result.append([last[0], max(last[1], interval[1])])
+            } else {
+                result.append(interval)
+            }
+        }
+        return result
+    }
+    
+    /*
+     75. 颜色分类
+     给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地 对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+     我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+     必须在不使用库内置的 sort 函数的情况下解决这个问题。
+     */
+    
+    func sortColors(_ nums: inout [Int]) {
+        var left = 0
+        var right = nums.count - 1
+        var index = 0
+        
+        while index < right {
+            if nums[index] == 0 {
+                nums.swapAt(index, left)
+                left += 1
+                index += 1
+            } else if nums[index] == 2 {
+                nums.swapAt(index, right)
+                right -= 1
+            } else if nums[index] == 1 {
+                index += 1
+            }
+        }
+    }
+    
+    /*
+     JZ3 数组中重复的数字
+     在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组[2,3,1,0,2,5,3]，那么对应的输出是2或者3。存在不合法的输入的话输出-1
+     */
+    
+    func duplicate ( _ numbers: [Int]) -> Int {
+        guard numbers.count > 0 else { return -1 }
+        
+        var result = -1
+        var map = [Int: Int]() // 值: 出现次数
+        
+        for number in numbers {
+            map[number] = (map[number] ?? 0) + 1
+            if map[number]! > (map[result] ?? 0) {
+                result = number
+            }
+        }
+        
+        return result
+    }
+    
+    /*
+     JZ4 二维数组中的查找
+     在一个二维数组array中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+     [
+     [1,2,8,9],
+     [2,4,9,12],
+     [4,7,10,13],
+     [6,8,11,15]
+     ]
+     给定 target = 7，返回 true。
+
+     给定 target = 3，返回 false。
+
+     */
+    
+    func Find ( _ target: Int,  _ array: [[Int]]) -> Bool {
+        guard array.count > 0, array[0].count > 0 else { return false }
+        
+        var row = array.count - 1
+        var col = 0
+        
+        while row >= 0 && col < array[0].count {
+            if target == array[row][col] {
+                return true
+            } else if target < array[row][col] {
+                row -= 1
+            } else {
+                col += 1
+            }
+        }
+        
+        return false
+    }
+    
+    /*
+     JZ5 替换空格
+     请实现一个函数，将一个字符串s中的每个空格替换成“%20”。
+     例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+
+     数据范围:
+     0≤len(s)≤1000。保证字符串中的字符为大写英文字母、小写英文字母和空格中的一种。
+     */
+    
+    func replaceSpace ( _ s: String) -> String {
+//        return s.replacingOccurrences(of: " ", with: "%20")
+        var result = ""
+        for index in s.indices {
+            if s[index] == " " {
+                result.append("%20")
+            } else {
+                result.append(s[index])
+            }
+        }
+        return result
+    }
+    
+    /*
+     JZ29 顺时针打印矩阵
+     输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下4 X 4矩阵：
+     [
+      [1,2,3,4],
+      [5,6,7,8],
+      [9,10,11,12],
+      [13,14,15,16]
+     ]
+     [1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10]
+     */
+    
+    func printMatrix ( _ matrix: [[Int]]) -> [Int] {
+        guard matrix.count > 0, matrix[0].count > 0 else { return [Int]() }
+        var result = [Int]()
+        var left = 0
+        var right = matrix[0].count - 1
+        var top = 0
+        var bottom = matrix.count - 1
+        
+        while left <= right && top <= bottom {
+            for y in left...right {
+                result.append(matrix[top][y])
+            }
+            top += 1
+            if top > bottom { break }
+            
+            for x in top...bottom {
+                result.append(matrix[x][right])
+            }
+            right -= 1
+            if left > right { break }
+            
+            for y in (left...right).reversed() {
+                result.append(matrix[bottom][y])
+            }
+            bottom -= 1
+            if top > bottom { break }
+            
+            for x in (top...bottom).reversed() {
+                result.append(matrix[x][left])
+            }
+            left += 1
+            if left > right { break }
+        }
+            
+        return result
+    }
+    
+    /*
+     JZ50 第一个只出现一次的字符
+     在一个长为 字符串中找到第一个只出现一次的字符,并返回它的位置, 如果没有则返回 -1（需要区分大小写）.（从0开始计数）
+
+     */
+    func FirstNotRepeatingChar ( _ str: String) -> Int {
+        let chars = [Character](str)
+        var map = [Character: Int]()
+        
+        for char in chars {
+            map[char] = (map[char] ?? 0) + 1
+        }
+        
+        for index in chars.indices {
+            if let value = map[chars[index]], value == 1 {
+                return index
+            }
+        }
+        
+        return -1
+    }
+    
+    /*
+     20. 有效的括号
+     给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+     有效字符串需满足：
+
+     左括号必须用相同类型的右括号闭合。
+     左括号必须以正确的顺序闭合。
+     每个右括号都有一个对应的相同类型的左括号。
+     */
+    
+    func isValid(_ s: String) -> Bool {
+        var stack: [Character] = .init()
+        let bracketMap: [Character: Character] = [")":"(", "}": "{", "]":"["]
+        
+        for char in [Character](s) {
+            if let bracketPair = bracketMap[char], stack.last == bracketPair {
+                stack.removeLast()
+            } else {
+                stack.append(char)
+            }
+        }
+        
+        return stack.isEmpty
+    }
+    
+    /*
+     32. 最长有效括号
+     给你一个只包含 '(' 和 ')' 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
+     */
+    func longestValidParentheses(_ s: String) -> Int {
+        let chars = [Character](s)
+        var stack: [Int] = [-1]
+        var result: Int = 0
+        
+        for index in chars.indices {
+            if chars[index] == "(" {
+                stack.append(index)
+            } else if chars[index] == ")" {
+                if stack.count > 1 && chars[stack.last!] == "(" {
+                    stack.removeLast()
+                    result = max(result, index - stack.last!)
+                } else {
+                    stack.append(index)
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    /*
+     JZ9 用两个栈实现队列
+     用两个栈来实现一个队列，使用n个元素来完成 n 次在队列尾部插入整数(push)和n次在队列头部删除整数(pop)的功能。 队列中的元素为int类型。保证操作合法，即保证pop操作时队列内已有元素。
+     */
+    
+    class TwoStackForQueue {
+        var empty: [Int] = .init()
+        var stack: [Int] = .init()
+        
+        func push ( _ node: Int) {
+            while stack.last != nil {
+                empty.append(stack.removeLast())
+            }
+            
+            stack.append(node)
+            
+            while empty.last != nil {
+                stack.append(empty.removeLast())
+            }
+        }
+        
+        func pop () -> Int {
+            return stack.removeLast()
+        }
+    }
+    
+    /*
+     JZ30 包含min函数的栈
+     定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的 min 函数，输入操作时保证 pop、top 和 min 函数操作时，栈中一定有元素。
+     */
+    
+    class StackWithMinFunction {
+        
+        var valueStack: [Int] = .init()
+        
+        var minStack: [Int] = .init()
+        
+        func push ( _ value: Int) {
+            
+            valueStack.append(value)
+            
+            if let last = minStack.last {
+                minStack.append(Swift.min(value, last))
+            } else {
+                minStack.append(value)
+            }
+        }
+
+        func pop () {
+            valueStack.removeLast()
+            minStack.removeLast()
+        }
+        
+        func top () -> Int {
+            return valueStack.last!
+        }
+        
+        func min () -> Int {
+            return minStack.last!
+        }
+           
+    }
+    
+    /*
+     JZ31 栈的压入、弹出序列
+     输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。
+     */
+    
+    func IsPopOrder ( _ pushV: [Int],  _ popV: [Int]) -> Bool {
+        var stack: [Int] = .init()
+        
+        var popValue = popV
+        
+        for push in pushV {
+            stack.append(push)
+            
+            while !stack.isEmpty, stack.last == popValue.first {
+                stack.removeLast()
+                popValue.removeFirst()
+            }
+        }
+        
+        return stack.isEmpty
     }
 }
