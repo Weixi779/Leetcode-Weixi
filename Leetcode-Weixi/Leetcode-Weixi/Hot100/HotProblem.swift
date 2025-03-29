@@ -2348,4 +2348,57 @@ struct HotProblem2025 {
             return tailNode
         }
     }
+    
+    func numIslands(_ grid: [[Character]]) -> Int {
+        guard grid.count > 0, grid[0].count > 0 else { return 0 }
+        
+        var result: Int = 0
+        var visited = [[Bool]](repeating: [Bool](repeating: false, count: grid[0].count), count: grid.count)
+        
+        for x in grid.indices {
+            for y in grid[x].indices {
+                if grid[x][y] == "1", visited[x][y] == false {
+                    result += 1
+                    visited[x][y] = true
+                    numIslandsHelper(grid, (x, y), &visited)
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    func isValidPosition(
+        _ position: (Int, Int),
+        _ range: (Int, Int)
+    ) -> Bool {
+        
+        return (position.0 >= 0 && position.0 < range.0) && (position.1 >= 0 && position.1 < range.1)
+    }
+    
+    
+    func numIslandsHelper(
+        _ grid: [[Character]],
+        _ position: (Int, Int),
+        _ visited: inout [[Bool]]
+    ) {
+        let vectors: [(Int, Int)] = [(1,0), (0,1), (-1,0), (0, -1)]
+        
+        var queue: [(Int, Int)] = [(position.0, position.1)]
+        
+        while !queue.isEmpty {
+            var node = queue.removeFirst()
+            for vector in vectors {
+                let x = node.0 + vector.0
+                let y = node.1 + vector.1
+                
+                if isValidPosition((x,y), (visited.count, visited[0].count)) {
+                    if grid[x][y] == "1" && visited[x][y] == false {
+                        queue.append((x,y))
+                        visited[x][y] = true
+                    }
+                }
+            }
+        }
+    }
 }
