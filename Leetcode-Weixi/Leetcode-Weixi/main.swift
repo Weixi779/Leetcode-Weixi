@@ -34,4 +34,6 @@ let hot = HotProblem()
 //print(hot.minPathSum([[1,2,3],[4,5,6]]))
 //print(hot.exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
 //print(hot.wordBreak("leetcode", ["leet", "code"]))
-print(hot.numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))
+//print(hot.numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))
+
+print(HotProblem2025().generateParenthesis(3))

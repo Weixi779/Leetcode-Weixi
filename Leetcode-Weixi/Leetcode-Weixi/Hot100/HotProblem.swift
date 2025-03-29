@@ -1072,7 +1072,6 @@ extension HotProblem {
 
 // MARK: - 树 专项
 extension HotProblem {
-    
 //    // - 递归写法
 //    func preorder(_ root: Node?) -> [Int] {
 //        guard let root = root else { return [] }
@@ -1743,5 +1742,610 @@ struct HotProblem2025 {
         }
         
         return stack.isEmpty
+    }
+    
+    /*
+     JZ40 最小的K个数
+     给定一个长度为 n 的可能有重复值的数组，找出其中不去重的最小的 k 个数。例如数组元素是4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4(任意顺序皆可)。
+     */
+//    func GetLeastNumbers_Solution ( _ input: [Int],  _ k: Int) -> [Int] {
+//        guard input.count > 0, k > 0 else { return [] }
+//        
+//        var heap = Heap<Int>(orderingAt: >)
+//        
+//        for num in nums {
+//            if heap.count < k {
+//                // 如果堆未满，直接添加元素
+//                heap.insert(num)
+//            } else if let maxElement = heap.peek(), num < maxElement {
+//                // 如果当前元素比堆顶小，移除堆顶并添加当前元素
+//                _ = heap.popMax()
+//                heap.insert(num)
+//            }
+//        }
+//        
+//        // 将堆中的元素转换为数组并返回
+//        return heap.unordered
+//    }
+    
+    class FirstDifferenceCharacter {
+        var queue: [Character] = .init()
+        var map: [Character] = .init()
+        
+        func Insert ( _ ch: Character) {
+            if queue.contains(ch) {
+                if let index = queue.firstIndex(of: ch) {
+                    queue.remove(at: index)
+                    map.append(ch)
+                }
+            } else if !map.contains(ch) {
+                queue.append(ch)
+            }
+        }
+        
+        func FirstAppearingOnce () -> Character {
+            return queue.first ?? "#"
+        }
+    }
+    
+    class MaxValueForWindow {
+        func maxInWindows ( _ num: [Int],  _ size: Int) -> [Int] {
+            guard size > 0 else { return [] }
+            var queue: [Int] = .init()
+            
+            var result: [Int] = .init()
+            
+            for n in num {
+                queue.append(n)
+                
+                if queue.count > size {
+                    queue.removeFirst()
+                }
+                
+                if queue.count == size {
+                    result.append(queue.max()!)
+                }
+            }
+            
+            return result
+        }
+    }
+    
+    func FindNumbersWithSum ( _ array: [Int],  _ sum: Int) -> [Int] {
+        guard array.count > 0 else { return [] }
+        var left: Int = 0
+        var right: Int = array.count - 1
+        
+        while left < right {
+            let currentSum = array[left] + array[right]
+            if currentSum == sum {
+                return [array[left], array[right]]
+            } else if currentSum < sum {
+                left += 1
+            } else if currentSum > sum {
+                right -= 1
+            }
+        }
+        
+        return []
+    }
+    
+    func ReverseSentence ( _ ReverseSentence: String) -> String {
+        if ReverseSentence.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return ReverseSentence
+        }
+        
+        return ReverseSentence.split(separator: " ").reversed().joined(separator: " ")
+    }
+    
+    func LeftRotateString ( _ str: String,  _ n: Int) -> String {
+        guard str.count > 0 else { return "" }
+        
+        var string = str
+
+        let index = n % str.count
+
+        var prefixChars = [Character]()
+
+        for _ in 0..<index {
+            prefixChars.append(string.removeFirst())
+        }
+
+        string += prefixChars.map { String($0) }.joined()
+        
+        return string
+    }
+    
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        let dummy: ListNode = .init()
+        var node: ListNode? = head
+        
+        while node != nil {
+            let next = node?.next
+            node?.next = dummy.next
+            dummy.next = node
+            node = next
+        }
+        
+        return dummy.next
+    }
+    
+    /*
+     144. 二叉树的前序遍历
+     给你二叉树的根节点 root ，返回它节点值的 前序 遍历。
+     */
+    
+    func preorderTraversal_recursive(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        return [root.val] + preorderTraversal_recursive(root.left) + preorderTraversal_recursive(root.right)
+    }
+    
+    // 根 -> 左 -> 右
+    func preorderTraversal_iterative(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        var result: [Int] = .init()
+        var stack: [TreeNode] = [root]
+        
+        while let node = stack.popLast() {
+            result.append(node.val)
+            // 因为是栈 所以先右后左
+            if let right = root.right { stack.append(right) }
+            
+            if let left = node.left { stack.append(left) }
+        }
+        
+        return result
+    }
+    
+    /*
+     94. 二叉树的中序遍历
+     给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+     */
+    func inorderTraversal_recursive(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        return inorderTraversal_recursive(root.left) + [root.val] + inorderTraversal_recursive(root.right)
+    }
+    
+    func inorderTraversal_iterative(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        var result: [Int] = .init()
+        var stack: [TreeNode] = .init()
+        var node: TreeNode? = root
+        
+        while node != nil || !stack.isEmpty {
+            while let current = node {
+                stack.append(current)
+                node = current.left
+            }
+            
+            let current = stack.removeLast()
+            result.append(current.val)
+            
+            node = node?.right
+        }
+        
+        return result
+    }
+    
+    func postorderTraversal_recursive(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        return postorderTraversal_recursive(root.left) + postorderTraversal_recursive(root.right) + [root.val]
+    }
+    
+    func postorderTraversal_iterative(_ root: TreeNode?) -> [Int] {
+        guard let root = root else { return [] }
+        
+        var result: [Int] = .init()
+        var stack1: [TreeNode] = [root]
+        var stack2 = [TreeNode]()
+        
+        while !stack1.isEmpty {
+            let node = stack1.removeLast()
+            stack2.append(node)
+            
+            // 注意：先压左，再压右（这样出栈是根→右→左）
+            if let left = node.left {
+                stack1.append(left)
+            }
+            if let right = node.right {
+                stack1.append(right)
+            }
+        }
+        
+        // stack2中是“根 → 右 → 左”，翻转后就是后序遍历
+        while !stack2.isEmpty {
+            result.append(stack2.removeLast().val)
+        }
+        
+        return result
+    }
+    
+    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+        guard let root = root else { return [] }
+        var result = [[Int]]()
+        var queue: [TreeNode] = [root]
+        
+        while !queue.isEmpty {
+            result.append(queue.map { $0.val })
+            var nextLevel: [TreeNode] = .init()
+            
+            for node in queue {
+                if let left = node.left {
+                    nextLevel.append(left)
+                }
+                if let right = node.right {
+                    nextLevel.append(right)
+                }
+            }
+            
+            queue = nextLevel
+        }
+        
+        return result
+    }
+    
+    
+    func maxDepth(_ root: TreeNode?) -> Int {
+        guard let root = root else { return 0 }
+        
+        var queue: [TreeNode] = [root]
+        var result = 0
+
+        while !queue.isEmpty {
+            var next: [TreeNode] = .init()
+            
+            for node in queue {
+                if let left = node.left {
+                    next.append(left)
+                }
+                if let right = node.right {
+                    next.append(right)
+                }
+            }
+            result += 1
+            queue = next
+        }
+        
+        return result
+    }
+    /*
+     101. 对称二叉树
+     给你一个二叉树的根节点 root ， 检查它是否轴对称。
+     */
+    func isSymmetric(_ root: TreeNode?) -> Bool {
+        return isSymmetricHelper(root?.left, root?.right)
+    }
+    
+    func isSymmetricHelper(_ left: TreeNode?, _ right: TreeNode?) -> Bool {
+        if left == nil && right == nil { return true }
+        
+        if left?.val != right?.val { return false }
+        
+        return isSymmetricHelper(left?.left, right?.right) && isSymmetricHelper(left?.right, right?.left)
+    }
+    
+    func invertTree(_ root: TreeNode?) -> TreeNode? {
+        guard let root = root else { return nil }
+        let left = invertTree(root.right)
+        let right = invertTree(root.left)
+        root.right = left
+        root.left = right
+        return root
+    }
+    
+    func invertTree_iterative(_ root: TreeNode?) -> TreeNode? {
+        guard let root = root else { return nil }
+        
+        var queue: [TreeNode] = [root]
+        
+        while !queue.isEmpty {
+            let node = queue.removeFirst()
+            
+            if node.left != nil || node.right != nil {
+                let left = node.left
+                let right = node.right
+                node.left = right
+                node.right = left
+            }
+            
+            if let left = node.left {
+                queue.append(left)
+            }
+            if let right = node.right {
+                queue.append(right)
+            }
+        }
+        
+        return root
+    }
+    
+    /*
+     17. 电话号码的字母组合
+     给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+     给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+     */
+    
+    func letterCombinations(_ digits: String) -> [String] {
+        guard digits.count > 0 else { return [] }
+        let letterMap : [Character:[Character]] = [
+            "1":[],
+            "2":["a","b","c"],
+            "3":["d","e","f"],
+            "4":["g","h","i"],
+            "5":["j","k","l"],
+            "6":["m","n","o"],
+            "7":["p","q","r","s"],
+            "8":["t","u","v"],
+            "9":["w","x","y","z"]
+        ]
+        
+        var result: [String] = []
+        var current: String = ""
+        let map: [[Character]] = digits.compactMap { letterMap[$0] }
+        letterCombinationsHelper(map: map, index: 0, current: &current, result: &result)
+        
+        return result
+    }
+    
+    func letterCombinationsHelper(
+        map: [[Character]],
+        index: Int,
+        current: inout String,
+        result: inout [String]
+    ) {
+        if index == map.count {
+            result.append(current)
+            return
+        }
+        
+        for char in map[index] {
+            current.append(char)
+            letterCombinationsHelper(map: map, index: index + 1, current: &current, result: &result)
+            current.removeLast()
+        }
+    }
+    
+    /*
+     22. 括号生成
+     数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+     */
+    func generateParenthesis(_ n: Int) -> [String] {
+        guard n > 0 else { return [] }
+        
+        var result: [String] = .init()
+        var current: String = ""
+        generateParenthesisHelper(n, 0, 0, &current, &result)
+        return result
+    }
+    
+    func generateParenthesisHelper(
+        _ target: Int,
+        _ leftCount: Int,
+        _ rightCount: Int,
+        _ current: inout String,
+        _ result: inout [String]
+    ) {
+        if leftCount == target && rightCount == target {
+            result.append(current)
+            return
+        }
+        
+        if leftCount < target {
+            current.append("(")
+            generateParenthesisHelper(target, leftCount + 1, rightCount, &current, &result)
+            current.removeLast()
+        }
+        
+        if leftCount > rightCount {
+            current.append(")")
+            generateParenthesisHelper(target, leftCount, rightCount + 1, &current, &result)
+            current.removeLast()
+        }
+    }
+    
+    /*
+     39. 组合总和
+     给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+     candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。
+     对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+     */
+    
+//    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+//        
+//    }
+    
+    func merge2(_ intervals: [[Int]]) -> [[Int]] {
+        guard intervals.count > 0 else { return [] }
+        
+        var intervals = intervals.sorted { $0[0] < $1[0] }
+        var result: [[Int]] = .init()
+        
+        for interval in intervals {
+            if let last = result.last, last[1] >= interval[0] {
+                result.removeLast()
+                result.append([last[0], max(last[1], interval[1])])
+            } else {
+                result.append(interval)
+            }
+        }
+        
+        return result
+    }
+    
+    class LRUCache {
+        class DoubleNode {
+            var key: Int
+            var value: Int
+            var prev: DoubleNode?
+            var next: DoubleNode?
+            
+            init(_ key: Int, _ value: Int) {
+                self.key = key
+                self.value = value
+            }
+        }
+        
+        var cache: [Int: DoubleNode] = .init()
+        let max: Int
+        var head: DoubleNode
+        var tail: DoubleNode
+        
+        init(_ max: Int) {
+            self.max = max
+            self.head = .init(0, 0)
+            self.tail = .init(0, 0)
+            head.next = tail
+            tail.prev = head
+        }
+        
+        func get(_ key: Int) -> Int {
+            guard let node = self.cache[key] else {
+                return -1
+            }
+            moveToHead(node)
+            return node.value
+        }
+        
+        func put(_ key: Int, _ value: Int) {
+            if let node = self.cache[key] {
+                node.value = value
+                moveToHead(node)
+                return
+            }
+            
+            let newNode = DoubleNode(key, value)
+            cache[key] = newNode
+            addToHead(newNode)
+            
+            if cache.count > max {
+                if let tail = removeTail() {
+                    cache.removeValue(forKey: tail.key)
+                }
+            }
+        }
+        
+        func addToHead(_ node: DoubleNode) {
+            node.prev = head
+            node.next = head.next
+            head.next?.prev = node
+            head.next = node
+        }
+        
+        func removeNode(_ node: DoubleNode) {
+            node.prev?.next = node.next
+            node.next?.prev = node.prev
+        }
+        
+        func moveToHead(_ node: DoubleNode) {
+            removeNode(node)
+            addToHead(node)
+        }
+        
+        func removeTail() -> DoubleNode? {
+            guard let tailNode = tail.prev, tailNode !== head else { return nil }
+            removeNode(tailNode)
+            return tailNode
+        }
+    }
+    
+    func Find2 ( _ target: Int,  _ array: [[Int]]) -> Bool {
+        guard array.count > 0, array[0].count > 0 else { return false }
+        
+        var x = 0
+        var y = array.count - 1
+        
+        while x < array[0].count && y >= 0 {
+            if array[y][x] == target {
+                return true
+            } else if array[y][x] < target {
+                x += 1
+            } else if array[y][x] > target {
+                y -= 1
+            }
+        }
+        
+        return false
+    }
+    
+    class LRUCache2 {
+        class DoubleNode {
+            var key: Int
+            var value: Int
+            var prev: DoubleNode?
+            var next: DoubleNode?
+            
+            init(_ key: Int, _ value: Int) {
+                self.key = key
+                self.value = value
+            }
+        }
+        
+        var map: [Int: DoubleNode] = .init()
+        let max: Int
+        var head: DoubleNode = .init(0, 0)
+        var tail: DoubleNode = .init(0, 0)
+        
+        init(_ count: Int) {
+            self.max = count
+            self.head.next = tail
+            self.tail.prev = head
+        }
+        
+        
+        func get(_ key: Int) -> Int {
+            guard let node = self.map[key] else { return -1 }
+            
+            moveToHead(node)
+            return node.value
+        }
+        
+        func put(_ key: Int, _ value: Int) {
+            if let node = self.map[key] {
+                moveToHead(node)
+                node.value = value
+                return
+            }
+            
+            let newNode = DoubleNode(key, value)
+            self.map[key] = newNode
+            addToHead(newNode)
+            
+            if map.count > max {
+                if let tailNode = removeTail() {
+                    self.map.removeValue(forKey: tailNode.key)
+                }
+            }
+        }
+        
+        func moveToHead(_ node: DoubleNode) {
+            removeNode(node)
+            addToHead(node)
+        }
+        
+        func addToHead(_ node: DoubleNode) {
+            node.prev = head
+            node.next = head.next
+            head.next = node
+            head.next?.prev = node
+        }
+        
+        func removeNode(_ node: DoubleNode) {
+            node.prev?.next = node.next
+            node.next?.prev = node.prev
+        }
+        
+        func removeTail() -> DoubleNode? {
+            guard let tailNode = tail.prev, tailNode !== head else {
+                return nil
+            }
+            
+            removeNode(tailNode)
+            return tailNode
+        }
     }
 }
