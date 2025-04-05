@@ -2401,4 +2401,262 @@ struct HotProblem2025 {
             }
         }
     }
+    
+    func permute(_ nums: [Int]) -> [[Int]] {
+        var result: [[Int]] = .init()
+        var path: [Int] = .init()
+        var set: Set<Int> = .init()
+        
+        func permuteHelper() {
+            if path.count == nums.count {
+                result.append(path)
+                return
+            }
+            
+            for num in nums where !set.contains(num){
+                path.append(num)
+                set.insert(num)
+                permuteHelper()
+                path.removeLast()
+                set.remove(num)
+            }
+        }
+        
+        permuteHelper()
+        
+        return result
+    }
+    
+    func numIsIslands2(_ grid: [[Character]]) -> Int {
+        guard grid.count > 0, grid[0].count > 0 else { return 0 }
+        
+        var grid = grid
+        let rows = grid.count
+        let cols = grid[0].count
+        var result = 0
+        
+        func dfs(_ row: Int, _ col: Int) {
+            guard (row >= 0 && row < rows) && (col >= 0 && col < cols) && grid[row][col] == "1" else {
+                return
+            }
+            
+            grid[row][col] = "0"
+            
+            dfs(row + 1, col)
+            dfs(row, col + 1)
+            dfs(row - 1, col)
+            dfs(row, col - 1)
+        }
+        
+        for row in 0..<rows {
+            for col in 0..<cols {
+                if grid[row][col] == "1" {
+                    dfs(row, col)
+                    result += 1
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        guard list1 != nil, list2 != nil else { return nil }
+
+        var dummy: ListNode = .init()
+        var node: ListNode? = dummy
+        var node1 = list1
+        var node2 = list2
+
+        while let value1 = node1?.val, let value2 = node2?.val {
+            if value1 < value2 {
+                node?.next = node1
+                node1 = node1?.next
+            } else {
+                node?.next = node2
+                node2 = node2?.next
+            }
+            node = node?.next
+        }
+
+        node?.next = node1 ?? node2
+
+        return dummy.next
+    }
+    
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        let chars = [Character](s)
+        var seen: [Character: Int] = [:]
+        var left = 0, right = 0
+        var maxLength = 0
+
+        while right < chars.count {
+            let rightChar = chars[right]
+            right += 1
+            seen[rightChar] = (seen[rightChar] ?? 0) + 1
+
+            while let lastChar = seen[rightChar], lastChar > 1 {
+                let leftChar = chars[left]
+                left += 1
+                seen[leftChar]! -= 1
+            }
+
+            maxLength = max(maxLength, right - left)
+        }
+
+        return maxLength
+    }
+    
+//    func sortArray(_ nums: [Int]) -> [Int] {
+//        var nums = nums
+//        quickSort(&nums, 0, nums.count - 1)
+//        return nums
+//    }
+//    
+//    func quickSort(_ nums: inout [Int], _ left: Int, _ right: Int) {
+//        guard left < right else { return }
+//        let pivot = partition(&nums, left, right)
+//        quickSort(&nums, left, pivot - 1)
+//        quickSort(&nums, pivot + 1, right)
+//    }
+//    
+//    func partition(_ nums: inout [Int], _ left: Int, _ right: Int) -> Int {
+//        let pivot = nums[right]
+//        var small = left
+//        for index in left..<right {
+//            if nums[index] < pivot {
+//                nums.swapAt(small, index)
+//                small += 1
+//            }
+//        }
+//        nums.swapAt(small, right)
+//        
+//        return small
+//    }
+//
+    
+    func quickSort(_ nums: inout [Int], _ left: Int, _ right: Int, _ k: Int) -> Int {
+        let pivot = partition(&nums, left, right)
+        
+        if pivot == k {
+            return nums[pivot]
+        } else if pivot < k {
+            return quickSort(&nums, pivot + 1, right, k)
+        } else {
+            return quickSort(&nums, left, pivot - 1, k)
+        }
+    }
+    
+    func partition(_ nums: inout [Int], _ left: Int, _ right: Int) -> Int {
+        let pivot = nums[right]
+        var small = left
+        for index in left..<right {
+            if nums[index] < pivot {
+                nums.swapAt(small, index)
+                small += 1
+            }
+        }
+        nums.swapAt(small, right)
+        return small
+    }
+        
+    
+    class LRUCache0402 {
+        
+        class DoubleNode {
+            var key: Int
+            var value: Int
+            var prev: DoubleNode?
+            var next: DoubleNode?
+            
+            init(_ key: Int, _ value: Int) {
+                self.key = key
+                self.value = value
+            }
+        }
+        
+        let maxCount: Int
+        var nodeMap: [Int: DoubleNode] = [:]
+        var head: DoubleNode = .init(0, 0)
+        var tail: DoubleNode = .init(0, 0)
+
+        init(_ capacity: Int) {
+            self.maxCount = capacity
+            self.head.next = tail
+            self.tail.prev = head
+        }
+        
+        func get(_ key: Int) -> Int {
+            guard let node = self.nodeMap[key] else { return -1 }
+            
+            moveToHead(node)
+            return node.value
+        }
+        
+        func put(_ key: Int, _ value: Int) {
+            if let node = self.nodeMap[key] {
+                node.value = value
+                moveToHead(node)
+                return
+            }
+            
+            let newNode = DoubleNode(key, value)
+            self.nodeMap[key] = newNode
+            addToHead(newNode)
+            
+            if self.nodeMap.count > self.maxCount {
+                if let tailNode = removeTailNode() {
+                    self.nodeMap.removeValue(forKey: tailNode.key)
+                }
+            }
+        }
+        
+        private func moveToHead(_ node: DoubleNode) {
+            removeNode(node)
+            addToHead(node)
+        }
+        
+        private func addToHead(_ node: DoubleNode) {
+            node.next = head.next
+            node.prev = head
+            head.prev?.next = node
+            head.next = node
+        }
+        
+        private func removeNode(_ node: DoubleNode) {
+            node.next?.prev = node.prev
+            node.prev?.next = node.next
+        }
+        
+        private func removeTailNode() -> DoubleNode? {
+            guard let tailNode = tail.prev, tailNode !== self.head else { return nil }
+            removeNode(tailNode)
+            return tailNode
+        }
+    }
+    
+    class QuickSort {
+        
+        func quickSort(_ nums: inout [Int], _ left: Int, _ right: Int) {
+            guard left < right else { return }
+            let pivotIndex = partition(&nums, left, right)
+            quickSort(&nums, left, pivotIndex - 1)
+            quickSort(&nums, pivotIndex + 1, right)
+        }
+        
+        func partition(_ nums: inout [Int], _ left: Int, _ right: Int) -> Int {
+            let pivot = nums[right]
+            var small = left
+            
+            for index in left..<right {
+                if nums[index] < pivot {
+                    nums.swapAt(small, index)
+                    small += 1
+                }
+            }
+            
+            nums.swapAt(small, right)
+            return small
+        }
+    }
 }
