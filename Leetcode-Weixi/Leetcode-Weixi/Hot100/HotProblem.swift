@@ -2659,4 +2659,492 @@ struct HotProblem2025 {
             return small
         }
     }
+    
+    func nextPermutation(_ nums: inout [Int]) {
+        let maxRange = nums.count - 1
+        var pivotIndex = maxRange - 1
+        
+        while pivotIndex >= 0 && nums[pivotIndex] >= nums[pivotIndex + 1] {
+            pivotIndex -= 1
+        }
+        
+        if pivotIndex >= 0 {
+            var firstBiggerIndex = maxRange
+            while nums[firstBiggerIndex] <= nums[pivotIndex] {
+                firstBiggerIndex -= 1
+            }
+            
+            nums.swapAt(pivotIndex, firstBiggerIndex)
+        }
+        
+        reverseSuffix(&nums, start: pivotIndex + 1)
+    }
+    
+    func reverseSuffix(_ nums: inout [Int], start: Int) {
+        var left = start
+        var right = nums.count - 1
+        while left < right {
+            nums.swapAt(left, right)
+            left += 1
+            right -= 1
+        }
+    }
+    
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var result: [[Int]] = []
+        var temp: [Int] = []
+        var sum: Int = 0
+        
+        func helper(_ start: Int) {
+            guard sum < target else { return }
+            
+            if sum == target {
+                result.append(temp)
+                return
+            }
+            
+            for index in start..<candidates.count {
+                temp.append(candidates[index])
+                sum += candidates[index]
+                helper(index)
+                temp.removeLast()
+                sum -= candidates[index]
+            }
+        }
+        
+        helper(0)
+        
+        return result
+    }
+    
+    func minDistance(_ word1: String, _ word2: String) -> Int {
+            let m = word1.count
+            let n = word2.count
+            let word1 = [Character](word1)
+            let word2 = [Character](word2)
+
+            var dp = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+
+            for i in 0...m {
+                dp[i][0] = i
+            }
+
+            for j in 0...n {
+                dp[0][j] = j
+            }
+
+            for i in 0...m {
+                for j in 0...n {
+                    if i == 0 || j == 0 { continue }
+                    
+                    if word1[i - 1] == word2[j - 1] {
+                        dp[i][j] = dp[i - 1][j - 1]
+                    } else {
+                        dp[i][j] = min(
+                            dp[i - 1][j] + 1,
+                            dp[i][j - 1] + 1,
+                            dp[i - 1][j - 1] + 1
+                        )
+                    }
+                }
+            }
+
+            return dp[m][n]
+        }
+    
+    func isValidBST(_ root: TreeNode?) -> Bool {
+        return isValidBSTHelper(root, nil, nil)
+    }
+    
+    func isValidBSTHelper(_ node: TreeNode?, _ min: TreeNode?, _ max: TreeNode?) -> Bool {
+        guard let node = node else { return true }
+        
+        if let min = min, node.val <= min.val { return false }
+        if let max = max, node.val >= max.val { return false }
+        
+        return isValidBSTHelper(node.left, min, node) && isValidBSTHelper(node.right, node, max)
+    }
+    
+    enum VisitState {
+        case notVisited, visiting, visited
+    }
+
+    func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
+        var map: [[Int]] = Array(repeating: [Int](), count: numCourses)
+        
+        for prerequisite in prerequisites {
+            map[prerequisite[1]].append(prerequisite[0])
+        }
+        
+        var visits: [VisitState] = Array(repeating: .notVisited, count: numCourses)
+        
+        func dfs(_ index: Int) -> Bool {
+            if visits[index] == .visiting { return false }
+            if visits[index] == .visited { return true }
+            
+            visits[index] = .visiting
+            
+            for next in map[index] {
+                if !dfs(next) { return false }
+            }
+            
+            visits[index] = .visited
+            
+            return true
+        }
+        
+        for index in map.indices {
+            if !dfs(index) { return false }
+        }
+        
+        return true
+    }
+    
+    func canFinish_BFS(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
+        var graph: [[Int]] = Array(repeating: [Int](), count: numCourses)
+        var degrees: [Int] = Array(repeating: 0, count: numCourses)
+        
+        for prerequisite in prerequisites {
+            graph[prerequisite[1]].append(prerequisite[0])
+            degrees[prerequisite[0]] += 1
+        }
+        
+        var queue: [Int] = []
+        for index in degrees.indices where degrees[index] == 0 {
+            queue.append(index)
+        }
+        
+        var count = 0
+        while !queue.isEmpty {
+            let first = queue.removeFirst()
+            count += 1
+            for next in graph[first] {
+                degrees[next] -= 1
+                if degrees[next] == 0 {
+                    queue.append(next)
+                }
+            }
+        }
+        
+        return count == numCourses
+    }
+    
+    class Trie {
+        class TrieNode {
+            var children: [Character: TrieNode] = [:]
+            var isEnd: Bool = false
+        }
+        
+        private let root = TrieNode()
+
+        init() {
+            
+        }
+        
+        func insert(_ word: String) {
+            var node = root
+            for char in word {
+                if node.children[char] == nil {
+                    node.children[char] = TrieNode()
+                }
+                node = node.children[char]!
+            }
+            node.isEnd = true
+        }
+        
+        func search(_ word: String) -> Bool {
+            guard let node = searchPrefix(word) else { return false }
+            return node.isEnd
+        }
+        
+        func startsWith(_ prefix: String) -> Bool {
+            return searchPrefix(prefix) != nil
+        }
+        
+        private func searchPrefix(_ str: String) -> TrieNode? {
+            var node = root
+            for char in str {
+                guard let next = node.children[char] else { return nil }
+                node = next
+            }
+            return node
+        }
+    }
+    
+    func coinChange(_ coins: [Int], _ amount: Int) -> Int {
+        guard amount != 0 else { return 0 }
+        var dp = Array(repeating: -1, count: amount + 1)
+        dp[0] = 0
+
+        for i in 1...amount {
+            for coin in coins {
+                if i >= coin && dp[i - coin] != -1 {
+                    if dp[i] == -1 {
+                        dp[i] = dp[i - coin] + 1
+                    } else {
+                        dp[i] = min(dp[i], dp[i - coin] + 1)
+                    }
+                }
+            }
+        }
+
+        return dp[amount]
+    }
+    
+    func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {
+        var map: [Int: Int] = [:]
+
+        for num in nums {
+            map[num] = (map[num] ?? 0) + 1
+        }
+
+        return map.sorted { $0.value > $1.value }.prefix(k).map { $0.key }
+    }
+    
+    /*
+
+     输入：s = "3[a]2[bc]"
+     输出："aaabcbc"
+
+     输入：s = "3[a2[c]]"
+     输出："accaccacc"
+
+     输入：s = "2[abc]3[cd]ef"
+     输出："abcabccdcdcdef"
+
+     输入：s = "abc3[cd]xyz"
+     输出："abccdcdcdxyz"
+     number 0 ~ 300
+     */
+
+    
+    func decodeString(_ s: String) -> String {
+        var stack: [Character] = []
+        
+        for char in s {
+            if char != "]" {
+                stack.append(char)
+                continue
+            }
+            
+            var temp: [Character] = []
+            while let last = stack.last, last != "[" {
+                temp.append(stack.removeLast())
+            }
+            stack.removeLast()
+            
+            var countString: [Character] = []
+            while let last = stack.last, last.isNumber {
+                countString.append(stack.removeLast())
+            }
+            let count = Int(String(countString.reversed())) ?? 1
+            
+            let replaceString = String(repeating: String(temp.reversed()), count: count)
+            stack.append(contentsOf: replaceString)
+        }
+        
+        return String(stack)
+    }
+    
+    func calcEquation(_ equations: [[String]], _ values: [Double], _ queries: [[String]]) -> [Double] {
+        var graph = [String: [String: Double]]()
+
+        for index in equations.indices {
+            let equation = equations[index]
+            let value = values[index]
+            graph[equation[0], default: [:]][equation[1]] = value
+            graph[equation[1], default: [:]][equation[0]] = 1.0 / value
+        }
+
+        func dfs(_ from: String, _ to: String, _ visited: inout Set<String>) -> Double {
+            guard from != to else { return 1.0 }
+
+            visited.insert(from)
+            guard let neighbors = graph[from] else { return -1.0 }
+            for (next, value) in neighbors {
+                if visited.contains(next) { continue }
+                let res = dfs(next, to, &visited)
+                if res != -1.0 {
+                    return res * value
+                }
+            }
+            return -1.0
+        }
+
+        var result = [Double]()
+        for query in queries {
+            if graph[query[0]] == nil || graph[query[1]] == nil {
+                result.append(-1.0)
+            } else {
+                var visited = Set<String>()
+                result.append(dfs(query[0], query[1], &visited))
+            }
+        }
+
+        return result
+    }
+    
+    func reconstructQueue(_ people: [[Int]]) -> [[Int]] {
+        let sortedPeople = people.sorted {
+            if $0[0] == $1[0] {
+                return $0[1] < $1[1]
+            } else {
+                return $0[0] > $1[0]
+            }
+        }
+        
+        var result = [[Int]]()
+        for person in sortedPeople {
+            result.insert(person, at: person[1])
+        }
+        
+        return result
+    }
+    
+    func pathSum(_ root: TreeNode?, _ targetSum: Int) -> Int {
+        
+        func dfs(_ node: TreeNode?, _ sum: Int) -> Int {
+            guard let node = node else { return 0 }
+            var count = 0
+            let nextSum = sum + node.val
+            if nextSum == targetSum {
+                count += 1
+            }
+            
+            count += dfs(node.left, nextSum)
+            count += dfs(node.right, nextSum)
+            
+            return count
+        }
+        guard let root = root else { return 0 }
+        
+        return dfs(root, 0) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum)
+    }
+
+    func findAnagrams(_ s: String, _ p: String) -> [Int] {
+        func asciiValue(for char: Character) -> Int {
+            return Int(char.asciiValue! - Character("a").asciiValue!)
+        }
+        
+        let chars = [Character](s)
+        let target = p.sorted()
+        let maxCount = s.count - target.count
+        var result: [Int] = []
+        
+        var targetMap: [Int] = Array(repeating: 0, count: 26)
+        var windowMap: [Int] = Array(repeating: 0, count: 26)
+        
+        for char in p {
+            targetMap[asciiValue(for: char)] += 1
+        }
+        
+        for i in 0..<p.count {
+            windowMap[asciiValue(for: chars[i])] += 1
+        }
+        
+        if windowMap == targetMap { result.append(0) }
+        
+        guard maxCount >= 1 else { return result }
+        
+        for index in 1...maxCount {
+            let removeIndex = index - 1
+            let addIndex = index + p.count
+            
+            windowMap[asciiValue(for: chars[addIndex])] += 1
+            windowMap[asciiValue(for: chars[removeIndex])] -= 1
+            
+            if targetMap == windowMap {
+                result.append(index)
+            }
+        }
+        
+        return result
+    }
+    
+    func findTargetSumWays(_ nums: [Int], _ target: Int) -> Int {
+        var result = 0
+        
+        func dfs(_ index: Int, _ sum: Int) {
+            if index == nums.count - 1 {
+                if sum == target { result += 1 }
+                return
+            }
+            
+            dfs(index + 1, sum + nums[index + 1])
+            dfs(index + 1, sum - nums[index + 1])
+        }
+        
+        return result
+    }
+    
+    func subarraySum(_ nums: [Int], _ k: Int) -> Int {
+        var count = 0
+        var prefixMap: [Int: Int] = [0: 1]
+        var prefixSum = 0
+        for num in nums {
+            prefixSum += num
+            
+            if let prefixCount = prefixMap[prefixSum - k] {
+                count += prefixCount
+            }
+            prefixMap[prefixSum, default: 0] += 1
+        }
+        
+        return count
+    }
+    
+    func countPalindromes(_ s: String) -> Int {
+        let chars = Array(s)
+        let n = chars.count
+        var count = 0
+
+        for center in 0..<(2 * n - 1) {
+            var left = center / 2
+            var right = left + center % 2
+            
+            while left >= 0, right < n, chars[left] == chars[right] {
+                count += 1
+                left -= 1
+                right += 1
+            }
+        }
+
+        return count
+    }
+    
+    func evaluateExpression(_ input: String) -> Int {
+        var stack: [Int] = []
+        var num: Int = 0
+        var op: Character = "+"
+        let chars = [Character](input) + ["+"]
+        
+        for char in chars {
+            if char.isNumber {
+                num *= 10
+                num += Int(String(char))!
+            }
+            
+            if "+-*".contains(char) {
+                switch op {
+                case "+":
+                    stack.append(num)
+                case "-":
+                    stack.append(-num)
+                case "*":
+                    let last = stack.removeLast()
+                    stack.append(num * last)
+                default:
+                    break
+                }
+                
+                op = char
+                num = 0
+            }
+            
+        }
+        
+        return stack.reduce(0, +)
+    }
 }
+
+

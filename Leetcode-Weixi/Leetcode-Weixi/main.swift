@@ -36,4 +36,6 @@ let hot = HotProblem()
 //print(hot.wordBreak("leetcode", ["leet", "code"]))
 //print(hot.numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))
 
-print(HotProblem2025().generateParenthesis(3))
+//print(HotProblem2025().findAnagrams("aaa", "abc"))
+
+print(HotProblem2025().evaluateExpression("333-2"))
